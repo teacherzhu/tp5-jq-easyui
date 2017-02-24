@@ -236,4 +236,5 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+    'administrator_user'  =>array('1')
 ];
