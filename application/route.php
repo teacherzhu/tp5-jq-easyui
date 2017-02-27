@@ -8,14 +8,9 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+use think\Route;
 
-return [
-    '__pattern__' => [
-        'name' => '\w+',
-    ],
-    '[hello]'     => [
-        ':id'   => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
-        ':name' => ['index/hello', ['method' => 'post']],
-    ],
-
-];
+Route::rule('admin/public','/public');
+Route::rule('admin/login',config('user_login'));
+Route::rule('admin/logout',config('user_logout'));
+Route::rule('admin/index',config('user_index'));

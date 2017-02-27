@@ -42,7 +42,7 @@ class Controller
     /**
      * 架构函数
      * @param Request $request Request对象
-     * @access public
+     * @access base
      */
     public function __construct(Request $request = null)
     {

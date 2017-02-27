@@ -18,7 +18,7 @@ class BelongsTo extends OneToOne
 {
     /**
      * 架构函数
-     * @access public
+     * @access base
      * @param Model  $parent 上级模型对象
      * @param string $model 模型名
      * @param string $foreignKey 关联外键
@@ -39,7 +39,7 @@ class BelongsTo extends OneToOne
      * 延迟获取关联数据
      * @param string   $subRelation 子关联名
      * @param \Closure $closure     闭包查询条件
-     * @access public
+     * @access base
      * @return array|false|\PDOStatement|string|Model
      */
     public function getRelation($subRelation = '', $closure = null)
@@ -53,7 +53,7 @@ class BelongsTo extends OneToOne
 
     /**
      * 预载入关联查询（数据集）
-     * @access public
+     * @access base
      * @param array     $resultSet 数据集
      * @param string    $relation 当前关联名
      * @param string    $subRelation 子关联名
@@ -103,7 +103,7 @@ class BelongsTo extends OneToOne
 
     /**
      * 预载入关联查询（数据）
-     * @access public
+     * @access base
      * @param Model     $result 数据对象
      * @param string    $relation 当前关联名
      * @param string    $subRelation 子关联名

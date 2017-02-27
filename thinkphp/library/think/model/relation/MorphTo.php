@@ -26,7 +26,7 @@ class MorphTo extends Relation
 
     /**
      * 架构函数
-     * @access public
+     * @access base
      * @param Model  $parent    上级模型对象
      * @param string $morphType 多态字段名
      * @param string $morphKey  外键名
@@ -59,7 +59,7 @@ class MorphTo extends Relation
 
     /**
      * 解析模型的完整命名空间
-     * @access public
+     * @access base
      * @param string $model 模型名（或者完整类名）
      * @return string
      */
@@ -79,7 +79,7 @@ class MorphTo extends Relation
 
     /**
      * 设置多态别名
-     * @access public
+     * @access base
      * @param array $alias 别名定义
      * @return $this
      */
@@ -91,7 +91,7 @@ class MorphTo extends Relation
 
     /**
      * 预载入关联查询
-     * @access public
+     * @access base
      * @param array    $resultSet   数据集
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -140,7 +140,7 @@ class MorphTo extends Relation
 
     /**
      * 预载入关联查询
-     * @access public
+     * @access base
      * @param Model    $result      数据对象
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -158,7 +158,7 @@ class MorphTo extends Relation
 
     /**
      * 关联统计
-     * @access public
+     * @access base
      * @param Model    $result  数据对象
      * @param \Closure $closure 闭包
      * @return integer
@@ -169,7 +169,7 @@ class MorphTo extends Relation
 
     /**
      * 多态MorphTo 关联模型预查询
-     * @access   public
+     * @access   base
      * @param object $model       关联模型对象
      * @param string $relation    关联名
      * @param        $result

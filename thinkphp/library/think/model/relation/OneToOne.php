@@ -33,7 +33,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 设置join类型
-     * @access public
+     * @access base
      * @param string $type JOIN类型
      * @return $this
      */
@@ -45,7 +45,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 预载入关联查询（JOIN方式）
-     * @access public
+     * @access base
      * @param Query    $query       查询对象
      * @param string   $relation    关联名
      * @param string   $subRelation 子关联
@@ -119,7 +119,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 预载入关联查询（数据集）
-     * @access public
+     * @access base
      * @param array    $resultSet   数据集
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -141,7 +141,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 预载入关联查询（数据）
-     * @access public
+     * @access base
      * @param Model    $result      数据对象
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -161,7 +161,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 保存（新增）当前关联数据对象
-     * @access public
+     * @access base
      * @param mixed $data 数据 可以使用数组 关联模型对象 和 关联对象的主键
      * @return integer
      */
@@ -178,7 +178,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 设置预载入方式
-     * @access public
+     * @access base
      * @param integer $type 预载入方式 0 JOIN查询 1 IN查询
      * @return $this
      */
@@ -190,7 +190,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 获取预载入方式
-     * @access public
+     * @access base
      * @return integer
      */
     public function getEagerlyType()
@@ -201,7 +201,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 绑定关联表的属性到父模型属性
-     * @access public
+     * @access base
      * @param mixed $attr 要绑定的属性列表
      * @return $this
      */
@@ -216,7 +216,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 关联统计
-     * @access public
+     * @access base
      * @param Model    $result  数据对象
      * @param \Closure $closure 闭包
      * @return integer
@@ -227,7 +227,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 一对一 关联模型预查询拼装
-     * @access public
+     * @access base
      * @param string $model    模型名称
      * @param string $relation 关联名
      * @param Model  $result   模型对象实例
@@ -277,7 +277,7 @@ abstract class OneToOne extends Relation
 
     /**
      * 一对一 关联模型预查询（IN方式）
-     * @access public
+     * @access base
      * @param object        $model       关联模型对象
      * @param array         $where       关联预查询条件
      * @param string        $key         关联键名

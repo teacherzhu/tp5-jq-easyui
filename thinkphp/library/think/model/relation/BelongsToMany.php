@@ -25,7 +25,7 @@ class BelongsToMany extends Relation
 
     /**
      * 架构函数
-     * @access public
+     * @access base
      * @param Model  $parent     上级模型对象
      * @param string $model      模型名
      * @param string $table      中间表名
@@ -78,7 +78,7 @@ class BelongsToMany extends Relation
 
     /**
      * 预载入关联查询（数据集）
-     * @access public
+     * @access base
      * @param array    $resultSet   数据集
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -122,7 +122,7 @@ class BelongsToMany extends Relation
 
     /**
      * 预载入关联查询（单个数据）
-     * @access public
+     * @access base
      * @param Model    $result      数据对象
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -147,7 +147,7 @@ class BelongsToMany extends Relation
 
     /**
      * 关联统计
-     * @access public
+     * @access base
      * @param Model    $result  数据对象
      * @param \Closure $closure 闭包
      * @return integer
@@ -165,7 +165,7 @@ class BelongsToMany extends Relation
 
     /**
      * 获取关联统计子查询
-     * @access public
+     * @access base
      * @param \Closure $closure 闭包
      * @return string
      */
@@ -181,7 +181,7 @@ class BelongsToMany extends Relation
 
     /**
      * 多对多 关联模型预查询
-     * @access public
+     * @access base
      * @param array  $where       关联预查询条件
      * @param string $relation    关联名
      * @param string $subRelation 子关联
@@ -213,7 +213,7 @@ class BelongsToMany extends Relation
 
     /**
      * BELONGS TO MANY 关联查询
-     * @access public
+     * @access base
      * @param string $table      中间表名
      * @param string $foreignKey 关联模型关联键
      * @param string $localKey   当前模型关联键
@@ -233,7 +233,7 @@ class BelongsToMany extends Relation
 
     /**
      * 保存（新增）当前关联数据对象
-     * @access public
+     * @access base
      * @param mixed $data  数据 可以使用数组 关联模型对象 和 关联对象的主键
      * @param array $pivot 中间表额外数据
      * @return integer
@@ -246,7 +246,7 @@ class BelongsToMany extends Relation
 
     /**
      * 批量保存当前关联数据对象
-     * @access public
+     * @access base
      * @param array $dataSet   数据集
      * @param array $pivot     中间表额外数据
      * @param bool  $samePivot 额外数据是否相同
@@ -268,7 +268,7 @@ class BelongsToMany extends Relation
 
     /**
      * 附加关联的一个中间表数据
-     * @access public
+     * @access base
      * @param mixed $data  数据 可以使用数组、关联模型对象 或者 关联对象的主键
      * @param array $pivot 中间表额外数据
      * @return int
@@ -311,7 +311,7 @@ class BelongsToMany extends Relation
 
     /**
      * 解除关联的一个中间表数据
-     * @access public
+     * @access base
      * @param integer|array $data        数据 可以使用关联对象的主键
      * @param bool          $relationDel 是否同时删除关联表数据
      * @return integer

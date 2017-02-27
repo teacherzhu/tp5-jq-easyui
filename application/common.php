@@ -13,15 +13,15 @@
 
 /**
  * 检测用户是否登录
- * @return integer -1--->未登录，大于-1---->当前登录用户ID
+ * @return integer 0--->未登录，大于0---->当前登录用户ID
  */
 function is_login()
 {
-    $user = session('uid');
+    $user = session(config('auth_key'));
     if (empty($user)) {
-        return -1;
+        return 0;
     } else {
-        return session('uid');
+        return session(config('auth_key'));
     }
 }
 
@@ -33,7 +33,7 @@ function is_login()
 function is_administrator($uid)
 {
     $uid = is_null($uid) ? is_login() : $uid;
-    if (in_array($uid, Config('administrator_user'))) {
+    if (in_array($uid, config('administrator'))) {
         return true;
     } else {
         return false;
@@ -42,11 +42,11 @@ function is_administrator($uid)
 
 /**
  * list 结构转为 tree 结构
- * @param array $list    源数据
- * @param string $pk     父节点ID
- * @param string $pid    数据ID
- * @param string $child  子节点名称
- * @param int $root      根节点ID
+ * @param array $list 源数据
+ * @param string $pk 父节点ID
+ * @param string $pid 数据ID
+ * @param string $child 子节点名称
+ * @param int $root 根节点ID
  * @return array
  */
 function list_to_tree($list, $pk = 'id', $pid = 'pid', $child = '_child', $root = 0)
@@ -133,7 +133,7 @@ function arr2str($arr, $glue = ',')
 
 /**
  * 数组排序
- * @access public
+ * @access base
  * @param array $list 查询结果
  * @param string $field 排序的字段名
  * @param string $sort 排序类型
@@ -189,6 +189,12 @@ function tree_to_list($tree, $child = '_child', $order = 'id', &$list = array())
     return $list;
 }
 
+function client_ip()
+{
+    $request = request();
+    return $request->ip();
+}
+
 /**
  * 时间戳格式化
  * @param int $time
@@ -201,11 +207,16 @@ function time_format($time = NULL, $format = 'Y-m-d H:i')
     return date($format, $time);
 }
 
-function get_param(){
-    if(IS_POST){
+function get_param()
+{
+    if (IS_POST) {
         return input('post.');
-    }
-    else{
+    } else {
         return input('get.');
     }
+}
+
+function message($code, $msg = '', $data = array())
+{
+    return ['Code' => $code, 'Msg' => $msg, 'Data' => $data];
 }

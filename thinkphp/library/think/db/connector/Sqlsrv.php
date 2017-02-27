@@ -43,7 +43,7 @@ class Sqlsrv extends Connection
 
     /**
      * 取得数据表的字段信息
-     * @access public
+     * @access base
      * @param string $tableName
      * @return array
      */
@@ -93,7 +93,7 @@ class Sqlsrv extends Connection
 
     /**
      * 取得数据表的字段信息
-     * @access public
+     * @access base
      * @param string $dbName
      * @return array
      */

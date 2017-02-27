@@ -33,7 +33,7 @@ class DataNotFoundException extends DbException
 
     /**
      * 获取数据表名
-     * @access public
+     * @access base
      * @return string
      */
     public function getTable()

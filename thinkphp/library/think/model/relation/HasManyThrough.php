@@ -26,7 +26,7 @@ class HasManyThrough extends Relation
 
     /**
      * 架构函数
-     * @access   public
+     * @access   base
      * @param Model  $parent     上级模型对象
      * @param string $model      模型名
      * @param string $through    中间模型名
@@ -61,7 +61,7 @@ class HasManyThrough extends Relation
 
     /**
      * 预载入关联查询
-     * @access public
+     * @access base
      * @param array    $resultSet   数据集
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -75,7 +75,7 @@ class HasManyThrough extends Relation
 
     /**
      * 预载入关联查询 返回模型对象
-     * @access public
+     * @access base
      * @param Model    $result      数据对象
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -89,7 +89,7 @@ class HasManyThrough extends Relation
 
     /**
      * 关联统计
-     * @access public
+     * @access base
      * @param Model    $result  数据对象
      * @param \Closure $closure 闭包
      * @return integer

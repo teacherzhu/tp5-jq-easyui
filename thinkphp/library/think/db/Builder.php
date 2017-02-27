@@ -33,7 +33,7 @@ abstract class Builder
 
     /**
      * 架构函数
-     * @access public
+     * @access base
      * @param Connection    $connection 数据库连接对象实例
      * @param Query         $query      数据库查询对象实例
      */
@@ -45,7 +45,7 @@ abstract class Builder
 
     /**
      * 获取当前的连接对象实例
-     * @access public
+     * @access base
      * @return void
      */
     public function getConnection()
@@ -55,7 +55,7 @@ abstract class Builder
 
     /**
      * 获取当前的Query对象实例
-     * @access public
+     * @access base
      * @return void
      */
     public function getQuery()
@@ -226,7 +226,7 @@ abstract class Builder
 
     /**
      * 生成查询条件SQL
-     * @access public
+     * @access base
      * @param mixed     $where
      * @param array     $options
      * @return string
@@ -639,7 +639,7 @@ abstract class Builder
 
     /**
      * 生成查询SQL
-     * @access public
+     * @access base
      * @param array $options 表达式
      * @return string
      */
@@ -667,7 +667,7 @@ abstract class Builder
 
     /**
      * 生成insert SQL
-     * @access public
+     * @access base
      * @param array     $data 数据
      * @param array     $options 表达式
      * @param bool      $replace 是否replace
@@ -698,7 +698,7 @@ abstract class Builder
 
     /**
      * 生成insertall SQL
-     * @access public
+     * @access base
      * @param array     $dataSet 数据集
      * @param array     $options 表达式
      * @return string
@@ -749,7 +749,7 @@ abstract class Builder
 
     /**
      * 生成slectinsert SQL
-     * @access public
+     * @access base
      * @param array     $fields 数据
      * @param string    $table 数据表
      * @param array     $options 表达式
@@ -768,7 +768,7 @@ abstract class Builder
 
     /**
      * 生成update SQL
-     * @access public
+     * @access base
      * @param array     $fields 数据
      * @param array     $options 表达式
      * @return string
@@ -802,7 +802,7 @@ abstract class Builder
 
     /**
      * 生成delete SQL
-     * @access public
+     * @access base
      * @param array $options 表达式
      * @return string
      */
