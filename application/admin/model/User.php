@@ -32,7 +32,7 @@ class User extends model
                 'password' => $password,
                 'status' => 1
             );
-            $user_info = $this->where($map)->field('password,create_time,update_time', true)->find();
+            $user_info = db($this->table)->where($map)->field('password,create_time,update_time', true)->find();
 
             if ($user_info) {
                 $this->save(['login_ip'  => client_ip(), 'login_time' => NOW_TIME],$map);

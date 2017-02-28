@@ -1,28 +1,38 @@
-var App = function () {
-    var debug = true;
-    var initFunction = function () {
-        $('#menu').tree({
-            url: '/admin/base/get_menu',
-            onLoadError: function (data) {
-                console.log(data);
+(function ($, window) {
+    var app = {
+        debug: true,
+        init: function () {
+            window.app.SLog('------------------init    start-----------------------');
+            $('#menu').tree({
+                url: './base/get_menu',
+                method: 'post',
+                animate: true,
+                lines: true,
+                onLoadSuccess:function (data) {
+                    window.app.SLog('--------------menu load success---------------');
+                },
+                onClick:function (node) {
+                    window.app.SLog('----------------menu click--------------------');
+                    window.app.SLog(node);
+                },
+                onLoadError: function (data) {
+                    window.app.error(data);
+                }
+            });
+            window.app.SLog('------------------init    end-----------------------');
+        },
+        error: function (data) {
+            try {
+                var dataJSON = JSON.parse(data);
+
+                $.messager.alert('错 误', dataJSON.Msg, 'error');
+
+            } catch (e) {
+                $.messager.alert('错 误', '数据格式错误！', 'error');
             }
-        });
-    };
-    var errorFunction = function (data) {
-        try {
-            var dataJSON = JSON.parse(data);
-
-            $.messager.alert('错 误', dataJSON.Msg, 'error');
-
-        } catch (e) {
-            $.messager.alert('错 误', '数据格式错误！', 'error');
-        }
-    };
-    return {
-        init: initFunction,
-        error: errorFunction,
+        },
         SLog: function () {
-            if (debug) {
+            if (this.debug) {
                 $.each(arguments, function (index, val) {
                     console.log('debug------------>', val);
                 });
@@ -67,20 +77,20 @@ var App = function () {
             });
         },
 
-        menuClick: function (node) {
-            if ($('#LeftMenu').tree('isLeaf', node.target)) {//判断是否是叶子节点
-                rule = node.attributes.rule;
-                var strs = new Array();
-                strs = rule.split("/"); //字符分割
-                var cname = strs[1];
-                var tit = node.text;
-                var url = node.attributes.url;
-                var icon = node.iconCls;
-                if (url) {
-                    updateTabs(cname, url, tit, icon);
-                }
-            }
-        },
+        // menuClick: function (node) {
+        //     if ($('#LeftMenu').tree('isLeaf', node.target)) {//判断是否是叶子节点
+        //         rule = node.attributes.rule;
+        //         var strs = new Array();
+        //         strs = rule.split("/"); //字符分割
+        //         var cname = strs[1];
+        //         var tit = node.text;
+        //         var url = node.attributes.url;
+        //         var icon = node.iconCls;
+        //         if (url) {
+        //             updateTabs(cname, url, tit, icon);
+        //         }
+        //     }
+        // },
 
         updateTabs: function (model_name, url, title, icon) {
             if ($('#tabs_' + model_name).length > 0) {
@@ -220,5 +230,6 @@ var App = function () {
         },
         dialogClose: function (id) {
         }
-    }
-}();
+    };
+    return window.app = window.app || app;
+})($, window);

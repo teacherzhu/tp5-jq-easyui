@@ -25,7 +25,14 @@ class Base extends Controller
         }
         if (IS_POST) {
             $param = get_param();
-            return (new User())->login($param);
+            $res = (new User())->login($param);
+
+            if(is_array($res)){
+                return json_encode($res);
+            }
+            else{
+                return $res;
+            }
         } else {
             return view('login');
         }
