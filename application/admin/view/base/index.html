@@ -1,9 +1,15 @@
 {extend name="base/base"/}
 {block name="body"}
+<style>
+    .tree-title{
+        font-size: 14px;
+        padding: 2px 2px;
+    }
+</style>
 <div class="easyui-layout" data-options="fit:true">
 <div data-options="region:'north',collapsible:false,border:false" style="height:100px;background-color:#6b9cde;"></div>
 <div data-options="region:'west',collapsible:false,border:false" style="width:150px;">
-    <ul id="menu"></ul>
+    <ul id="menu" style="margin-top: 10px"></ul>
 </div>
 <div data-options="region:'center',collapsible:false,border:false" style="padding:2px;background:#eee;">
     <div id="MainTabs" class="easyui-tabs" data-options="fit:true,border:false">
