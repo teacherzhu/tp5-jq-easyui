@@ -8,12 +8,47 @@
                 method: 'post',
                 animate: true,
                 lines: true,
-                onLoadSuccess:function (data) {
-                    window.app.SLog('--------------menu load success---------------');
+                onLoadSuccess: function (data) {
                 },
-                onClick:function (node) {
-                    window.app.SLog('----------------menu click--------------------');
-                    window.app.SLog(node);
+                onClick: function (node) {
+                    // window.app.SLog(node.target,$('#menu').tree('isLeaf', node.target));
+                    if ($('#menu').tree('isLeaf', node.target)) {//判断是否是叶子节点
+                        var rule = node.attributes.rule;
+                        var str = rule.split("/"); //字符分割
+                        var title = node.text;
+                        var url = node.attributes.url;
+                        var icon = node.iconCls;
+
+                        var options_s = {};
+                        if ($('#tabs_' + str[1]).length > 0) {
+
+                            var index = $('#mainTabs').tabs('getTabIndex', $('#tabs_' + str[1]));
+
+                            $('#mainTabs').tabs('select', index);
+                            var selectedTabs = $('#mainTabs').tabs('getSelected');
+                            options_s.href = url;
+                            options_s.title = title;
+                            options_s.iconCls = icon;
+
+                            $('#mainTabs').tabs('update', {
+                                tab: selectedTabs,
+                                options: options_s
+                            });
+                            selectedTabs.panel('refresh');
+                        } else {
+                            options_s.id = 'tabs_' + str[1];
+                            options_s.title = title;
+                            options_s.href = url;
+                            options_s.closable = true;
+                            if (icon != null) {
+                                options_s.iconCls = icon
+                            } else {
+                                options_s.iconCls = ''
+                            }
+                            $('#mainTabs').tabs('add', options_s);
+                        }
+
+                    }
                 },
                 onLoadError: function (data) {
                     window.app.error(data);
@@ -45,7 +80,6 @@
          * @param toolbar 表格上方工具条ID
          * @param method  远程数据加载方式‘post & get’
          * @param height  表格高度
-         * @param uniqueId 唯一键
          * @param singleSelect 是否为单选
          * @param pagination   是否进行分页
          */
@@ -53,76 +87,37 @@
             var toolbar = object.toolbar ? object.toolbar : '';
             var method = object.method ? object.method : 'post';
             var height = object.height ? object.height : 750;
-            var uniqueId = object.uniqueId ? object.uniqueId : 'id';
             var singleSelect = object.singleSelect ? false : true;
             var pagination = object.pagination ? false : true;
-            $("#contentTable").bootstrapTable({
+            $(object.grid).datagrid({
                 url: object.url,         //请求后台的URL（*）
                 columns: object.columns,
                 method: method,                      //请求方式（*）
                 toolbar: toolbar,                //工具按钮用哪个容器
                 height: height,
                 singleSelect: singleSelect,                  //单选选项
-                uniqueId: uniqueId,                     //每一行的唯一标识，一般为主键列
-                pagination: pagination,                   //是否显示分页（*）
-                pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 20,                       //每页的记录行数（*）
-                pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
-                showRefresh: true,                  //是否显示刷新按钮
-                minimumCountColumns: 2,             //最少允许的列数
-                clickToSelect: true                //是否启用点击选中行
-
+                fit: true,
+                fitColumns:true,
+                striped: true,
+                border: false,
+                pagination: pagination,
+                pageSize: 20,
+                pageList: [10, 20, 50],
+                pageNumber: 1,
+                sortName: 'id',
+                sortOrder: 'desc'
             });
         },
 
         // menuClick: function (node) {
         //     if ($('#LeftMenu').tree('isLeaf', node.target)) {//判断是否是叶子节点
         //         rule = node.attributes.rule;
-        //         var strs = new Array();
-        //         strs = rule.split("/"); //字符分割
-        //         var cname = strs[1];
-        //         var tit = node.text;
-        //         var url = node.attributes.url;
-        //         var icon = node.iconCls;
+
         //         if (url) {
         //             updateTabs(cname, url, tit, icon);
         //         }
         //     }
         // },
-
-        updateTabs: function (model_name, url, title, icon) {
-            if ($('#tabs_' + model_name).length > 0) {
-                index = $('#MainTabs').tabs('getTabIndex', $('#tabs_' + model_name));
-                $('#MainTabs').tabs('select', index);
-                Selected_tabs = $('#MainTabs').tabs('getSelected');
-                options_s = {};
-                options_s.href = url;
-                options_s.bodyCls = "tabs_box";
-                options_s.title = title;
-                options_s.iconCls = icon;
-
-                $('#MainTabs').tabs('update', {
-                    tab: Selected_tabs,
-                    options: options_s
-                });
-                Selected_tabs.panel('refresh');
-            } else {
-                options_s = {};
-                options_s.id = 'tabs_' + model_name;
-                options_s.title = tit;
-                options_s.href = url;
-                options_s.closable = true;
-                options_s.bodyCls = "tabs_box";
-                if (icon != null) {
-                    options_s.iconCls = icon
-                } else {
-                    options_s.iconCls = 'iconfont icon-viewlist'
-                }
-                $('#MainTabs').tabs('add', options_s);
-            }
-        },
 
 
         gridAjax: function (url, grid) {
@@ -130,14 +125,14 @@
                 if (!res.status) {
                     $.messager.show({title: '错误提示', msg: res.info, timeout: 2000, showType: 'slide'});
                 } else {
-                    $('#' + Datagrid).datagrid('reload');
+                    $('#' + grid).datagrid('reload');
                     $.messager.show({title: '成功提示', msg: res.info, timeout: 1000, showType: 'slide'});
                 }
             })
         },
 
         checkboxGridAjax: function (url, grid) {
-            var rows = $('#' + Datagrid).datagrid('getSelections');
+            var rows = $('#' + grid).datagrid('getSelections');
             if (rows.length == 0) {
                 $.messager.show({title: '错误提示', msg: '至少选择一行记录！', timeout: 2000, showType: 'slide'});
             } else {
@@ -145,12 +140,12 @@
                 for (var i = 0; i < rows.length; i++) {
                     id_arr.push(rows[i].id);
                 }
-                ids = id_arr.join(',');
+                var ids = id_arr.join(',');
                 $.post(url, {ids: ids}, function (res) {
                     if (!res.status) {
                         $.messager.show({title: '错误提示', msg: res.info, timeout: 2000, showType: 'slide'});
                     } else {
-                        $('#' + Datagrid).datagrid('reload');
+                        $('#' + grid).datagrid('reload');
                         $.messager.show({title: '成功提示', msg: res.info, timeout: 1000, showType: 'slide'});
                     }
                 })

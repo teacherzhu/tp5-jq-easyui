@@ -102,7 +102,7 @@ html {
     padding-left: 105px;
 }
 
-.actions #submit {
+.actions #sub {
     border: none;
     outline: none;
     background: #6699cc;
@@ -113,11 +113,11 @@ html {
     padding: 2px 15px \9;
 }
 
-.actions #submit:hover {
+.actions #sub:hover {
     background: #369;
 }
 
-.actions #submit:active {
+.actions #sub:active {
     background: #444;
 }
 

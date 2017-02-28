@@ -38,7 +38,8 @@ class User extends model
                 $this->save(['login_ip'  => client_ip(), 'login_time' => NOW_TIME],$map);
                 session(config('auth_key'), $user_info ['id']);
                 session('user_info', $user_info);
-                return redirect(config('user_index'));
+                return message('200','index');
+                //return redirect(config('user_index'));
             } else {
                 return message('400','用户名密码错误或者此用户已被禁用!');
             }

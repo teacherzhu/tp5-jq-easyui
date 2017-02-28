@@ -1,25 +1,44 @@
+{block name="extend_css"}
+{load href="../static/admin/css/index.css" /}
+{/block}
 {extend name="base/base"/}
 {block name="body"}
-<style>
-    .tree-title{
-        font-size: 14px;
-        padding: 2px 2px;
-    }
-</style>
 <div class="easyui-layout" data-options="fit:true">
-<div data-options="region:'north',collapsible:false,border:false" style="height:100px;background-color:#6b9cde;"></div>
-<div data-options="region:'west',collapsible:false,border:false" style="width:150px;">
-    <ul id="menu" style="margin-top: 10px"></ul>
-</div>
-<div data-options="region:'center',collapsible:false,border:false" style="padding:2px;background:#eee;">
-    <div id="MainTabs" class="easyui-tabs" data-options="fit:true,border:false">
-        <div title="控制台" data-options="closable:false,id:-1,bodyCls:'tabs_box'"
-             style="padding:5px;"></div>
+    <div data-options="region:'north',collapsible:false,border:false" style="height:80px;background-color:#6b9cde;">
+
+
+        <div class="top_right">
+            <ul>
+                <li><span class="iconCls icon-help" style="font-size:12px;"></span>
+                    <a href="#">帮助</a>
+                </li>
+                <li><span class="icon-more" style="font-size:12px;"></span>
+                    <a href="logout" class="topbar_menu">退出</a>
+                </li>
+            </ul>
+            <div class="top_user">
+            <span>
+                <font class="icon-account" style="color:#fff; padding-right:5px;"></font>
+                <a href="#">{$Think.session.user_info.username}</a>
+            </span>
+                <a href="#"><i>消息<b>0</b></i></a>
+
+            </div>
+        </div>
+
     </div>
-</div>
-<div data-options="region:'south',collapsible:false,border:false" style="height:20px;text-align: center">
-    <strong>Powered by li | Copyright © All rights reserved.</strong>
-</div>
+    <div data-options="region:'west',collapsible:false,border:false" style="width:150px;">
+        <ul id="menu" style="margin-top: 10px"></ul>
+    </div>
+    <div data-options="region:'center',collapsible:false,border:false" style="padding:2px;background:#eee;">
+        <div id="mainTabs" class="easyui-tabs" data-options="fit:true,border:false">
+            <div title="控制台" data-options="closable:false,id:-1"
+                 style="padding:5px;"></div>
+        </div>
+    </div>
+    <div data-options="region:'south',collapsible:false,border:false" style="height:20px;text-align: center">
+        <strong>Powered by li | Copyright © All rights reserved.</strong>
+    </div>
 </div>
 {/block}
 {block name="body-js"}
