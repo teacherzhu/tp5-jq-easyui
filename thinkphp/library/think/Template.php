@@ -39,7 +39,7 @@ class Template
         'cache_prefix'       => '', // 模板缓存前缀标识，可以动态改变
         'cache_time'         => 0, // 模板缓存有效期 0 为永久，(以数字为值，单位:秒)
         'layout_on'          => false, // 布局模板开关
-        'layout_name'        => 'layout', // 布局模板入口文件
+        'layout_name'        => 'template', // 布局模板入口文件
         'layout_item'        => '{__CONTENT__}', // 布局模板的内容替换标识
         'taglib_begin'       => '{', // 标签库标签开始标记
         'taglib_end'         => '}', // 标签库标签结束标记
@@ -445,7 +445,7 @@ class Template
     private function parseLayout(&$content)
     {
         // 读取模板中的布局标签
-        if (preg_match($this->getRegex('layout'), $content, $matches)) {
+        if (preg_match($this->getRegex('template'), $content, $matches)) {
             // 替换Layout标签
             $content = str_replace($matches[0], '', $content);
             // 解析Layout标签
@@ -1133,7 +1133,7 @@ class Template
                 case 'include':
                     $name = 'file';
                 case 'taglib':
-                case 'layout':
+                case 'template':
                 case 'extend':
                     if (empty($name)) {
                         $name = 'name';

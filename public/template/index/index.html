@@ -1,0 +1,57 @@
+{block name="title"}<title>{:config("WEB_TITLE")}</title>{/block}
+{load href="./static/easyui/jquery.min.js" /}
+{load href="./static/easyui/themes/bootstrap/easyui.css" /}
+{load href="./static/easyui/themes/icon.css" /}
+{load href="./static/easyui/jquery.easyui.min.js" /}
+{load href="./static/easyui/locale/easyui-lang-zh_CN.js" /}
+{block name="body"}
+
+<!-- 搜索框 -->
+{present name="search"}
+<div id="search_dialog">
+    <form id="search_from" method="post">
+        {volist name="search.search_list" id="search_list_item"}
+        <div>
+            <label>{$search_list_item.title}</label>
+            <input name="{$search_list_item.name}" class="{$search_list_item.class}"
+                   data-options="{$search_list_item.options}">
+        </div>
+        {/volist}
+    </form>
+</div>
+
+{/present}
+
+{present name="table"}
+<!-- 工具栏按钮 -->
+{notempty name="table.tool_bar"}
+
+    {notempty name="table.tool_bar.list"}
+        <div id="{$table.tool_bar.id}">
+        {volist name="table.tool_bar.list" id="list"}
+            {$list}
+        {/volist}
+        </div>
+    {notempty}
+
+{/notempty}
+<table id="{$table.id}" class="{$table.class}" data-options="{$table.operate}">
+    <thead>
+        <tr>
+            {notempty name="table.columns"}
+                {volist name="table.columns" id="column"}
+                    <th data-options="{$column.options}"></th>
+                {/volist}
+            {notempty}
+        </tr>
+    </thead>
+</table>
+{/present}
+{/block}
+{block name="body-js"}
+<script type="text/javascript">
+    function edit_fuc(id) {
+        alert(id);
+    }
+</script>
+{/block}
