@@ -21,7 +21,7 @@ class Sqlite extends Builder
 
     /**
      * limit
-     * @access base
+     * @access public
      * @return string
      */
     public function parseLimit($limit)
@@ -60,6 +60,9 @@ class Sqlite extends Builder
         $key = trim($key);
         if (strpos($key, '.')) {
             list($table, $key) = explode('.', $key, 2);
+            if ('__TABLE__' == $table) {
+                $table = $this->query->getTable();
+            }
             if (isset($options['alias'][$table])) {
                 $table = $options['alias'][$table];
             }

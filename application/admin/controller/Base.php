@@ -12,6 +12,7 @@ namespace app\admin\Controller;
 use app\admin\model\Rule;
 use app\admin\model\User;
 use think\Controller;
+use think\Request;
 
 class Base extends Controller
 {
@@ -20,11 +21,13 @@ class Base extends Controller
      */
     public function login()
     {
+
+        $request = Request::instance();
         if (is_login()) {
             return redirect(config('user_index'));
         }
-        if (IS_POST) {
-            $param = get_param();
+        if ($request->isPost()) {
+            $param =$request->param();
             $res = (new User())->login($param);
 
             if(is_array($res)){
@@ -34,7 +37,7 @@ class Base extends Controller
                 return $res;
             }
         } else {
-            return view('login');
+            return $this->fetch();
         }
 
     }
@@ -42,9 +45,9 @@ class Base extends Controller
     public function index()
     {
         if (is_login()) {
-            return view('index');
+            return $this->fetch();
         } else {
-            return view('login');
+            return redirect(config('user_login'));
         }
     }
 

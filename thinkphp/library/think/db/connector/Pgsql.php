@@ -19,6 +19,7 @@ use think\db\Connection;
  */
 class Pgsql extends Connection
 {
+    protected $builder = '\\think\\db\\builder\\Pgsql';
 
     /**
      * 解析pdo连接的dsn信息
@@ -37,7 +38,7 @@ class Pgsql extends Connection
 
     /**
      * 取得数据表的字段信息
-     * @access base
+     * @access public
      * @param string $tableName
      * @return array
      */
@@ -71,14 +72,14 @@ class Pgsql extends Connection
 
     /**
      * 取得数据库的表信息
-     * @access base
+     * @access public
      * @param string $dbName
      * @return array
      */
     public function getTables($dbName = '')
     {
         $this->initConnect(true);
-        $sql = "select tablename as Tables_in_test from pg_tables where  schemaname ='base'";
+        $sql = "select tablename as Tables_in_test from pg_tables where  schemaname ='public'";
         // 调试开始
         $this->debug(true);
         $pdo = $this->linkID->query($sql);

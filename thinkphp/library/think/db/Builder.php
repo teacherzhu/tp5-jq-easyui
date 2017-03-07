@@ -32,8 +32,8 @@ abstract class Builder
     protected $deleteSql    = 'DELETE FROM %TABLE% %USING% %JOIN% %WHERE% %ORDER%%LIMIT% %LOCK%%COMMENT%';
 
     /**
-     * 架构函数
-     * @access base
+     * 构造函数
+     * @access public
      * @param Connection    $connection 数据库连接对象实例
      * @param Query         $query      数据库查询对象实例
      */
@@ -45,7 +45,7 @@ abstract class Builder
 
     /**
      * 获取当前的连接对象实例
-     * @access base
+     * @access public
      * @return void
      */
     public function getConnection()
@@ -55,7 +55,7 @@ abstract class Builder
 
     /**
      * 获取当前的Query对象实例
-     * @access base
+     * @access public
      * @return void
      */
     public function getQuery()
@@ -226,7 +226,7 @@ abstract class Builder
 
     /**
      * 生成查询条件SQL
-     * @access base
+     * @access public
      * @param mixed     $where
      * @param array     $options
      * @return string
@@ -250,7 +250,10 @@ abstract class Builder
                     // 使用闭包查询
                     $query = new Query($this->connection);
                     call_user_func_array($value, [ & $query]);
-                    $str[] = ' ' . $key . ' ( ' . $this->buildWhere($query->getOptions('where'), $options) . ' )';
+                    $whereClause = $this->buildWhere($query->getOptions('where'), $options);
+                    if (!empty($whereClause)) {
+                        $str[] = ' ' . $key . ' ( ' . $whereClause . ' )';
+                    }
                 } elseif (strpos($field, '|')) {
                     // 不同字段使用相同查询条件（OR）
                     $array = explode('|', $field);
@@ -376,7 +379,7 @@ abstract class Builder
                 } else {
                     $zone = implode(',', $this->parseValue($value, $field));
                 }
-                $whereStr .= $key . ' ' . $exp . ' (' . $zone . ')';
+                $whereStr .= $key . ' ' . $exp . ' (' . (empty($zone) ? "''" : $zone) . ')';
             }
         } elseif (in_array($exp, ['NOT BETWEEN', 'BETWEEN'])) {
             // BETWEEN 查询
@@ -639,7 +642,7 @@ abstract class Builder
 
     /**
      * 生成查询SQL
-     * @access base
+     * @access public
      * @param array $options 表达式
      * @return string
      */
@@ -667,7 +670,7 @@ abstract class Builder
 
     /**
      * 生成insert SQL
-     * @access base
+     * @access public
      * @param array     $data 数据
      * @param array     $options 表达式
      * @param bool      $replace 是否replace
@@ -698,7 +701,7 @@ abstract class Builder
 
     /**
      * 生成insertall SQL
-     * @access base
+     * @access public
      * @param array     $dataSet 数据集
      * @param array     $options 表达式
      * @return string
@@ -749,7 +752,7 @@ abstract class Builder
 
     /**
      * 生成slectinsert SQL
-     * @access base
+     * @access public
      * @param array     $fields 数据
      * @param string    $table 数据表
      * @param array     $options 表达式
@@ -768,7 +771,7 @@ abstract class Builder
 
     /**
      * 生成update SQL
-     * @access base
+     * @access public
      * @param array     $fields 数据
      * @param array     $options 表达式
      * @return string
@@ -802,7 +805,7 @@ abstract class Builder
 
     /**
      * 生成delete SQL
-     * @access base
+     * @access public
      * @param array $options 表达式
      * @return string
      */

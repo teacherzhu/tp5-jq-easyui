@@ -22,8 +22,8 @@ class Merge extends Model
     protected $mapFields     = []; //  需要处理的模型映射字段，避免混淆 array( id => 'user.id'  )
 
     /**
-     * 架构函数
-     * @access base
+     * 构造函数
+     * @access public
      * @param array|object $data 数据
      */
     public function __construct($data = [])
@@ -38,7 +38,7 @@ class Merge extends Model
 
     /**
      * 查找单条记录
-     * @access base
+     * @access public
      * @param mixed        $data  主键值或者查询条件（闭包）
      * @param string|array $with  关联预查询
      * @param bool         $cache 是否缓存
@@ -102,7 +102,7 @@ class Merge extends Model
 
     /**
      * 查找所有记录
-     * @access base
+     * @access public
      * @param mixed        $data 主键列表或者查询条件（闭包）
      * @param array|string $with 关联预查询
      * @param bool         $cache
@@ -117,7 +117,7 @@ class Merge extends Model
 
     /**
      * 处理写入的模型数据
-     * @access base
+     * @access public
      * @param string $model  模型名称
      * @param array  $data   数据
      * @param bool   $insert 是否新增
@@ -143,7 +143,7 @@ class Merge extends Model
 
     /**
      * 保存模型数据 以及关联数据
-     * @access base
+     * @access public
      * @param mixed  $data     数据
      * @param array  $where    更新条件
      * @param string $sequence 自增序列名
@@ -278,7 +278,7 @@ class Merge extends Model
 
     /**
      * 删除当前的记录 并删除关联数据
-     * @access base
+     * @access public
      * @return int
      * @throws \Exception
      */

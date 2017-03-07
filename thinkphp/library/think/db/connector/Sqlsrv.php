@@ -25,7 +25,7 @@ class Sqlsrv extends Connection
         PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_STRINGIFY_FETCHES => false,
     ];
-
+    protected $builder = '\\think\\db\\builder\\Sqlsrv';
     /**
      * 解析pdo连接的dsn信息
      * @access protected
@@ -43,7 +43,7 @@ class Sqlsrv extends Connection
 
     /**
      * 取得数据表的字段信息
-     * @access base
+     * @access public
      * @param string $tableName
      * @return array
      */
@@ -93,7 +93,7 @@ class Sqlsrv extends Connection
 
     /**
      * 取得数据表的字段信息
-     * @access base
+     * @access public
      * @param string $dbName
      * @return array
      */

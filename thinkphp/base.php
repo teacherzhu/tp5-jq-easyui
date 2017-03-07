@@ -9,7 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-define('THINK_VERSION', '5.0.5');
+define('THINK_VERSION', '5.0.7');
 define('THINK_START_TIME', microtime(true));
 define('THINK_START_MEM', memory_get_usage());
 define('EXT', '.php');
@@ -30,16 +30,9 @@ defined('CONF_PATH') or define('CONF_PATH', APP_PATH); // 配置文件目录
 defined('CONF_EXT') or define('CONF_EXT', EXT); // 配置文件后缀
 defined('ENV_PREFIX') or define('ENV_PREFIX', 'PHP_'); // 环境变量的配置前缀
 
-
 // 环境常量
 define('IS_CLI', PHP_SAPI == 'cli' ? true : false);
 define('IS_WIN', strpos(PHP_OS, 'WIN') !== false);
-define('NOW_TIME', $_SERVER['REQUEST_TIME']); //获取请求时间
-define('REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
-define('IS_GET', REQUEST_METHOD == 'GET' ? true : false);
-define('IS_POST', REQUEST_METHOD == 'POST' ? true : false);
-define('IS_PUT', REQUEST_METHOD == 'PUT' ? true : false);
-define('IS_DELETE', REQUEST_METHOD == 'DELETE' ? true : false);
 
 // 载入Loader类
 require CORE_PATH . 'Loader.php';

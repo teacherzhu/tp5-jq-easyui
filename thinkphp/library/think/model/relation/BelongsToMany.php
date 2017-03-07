@@ -24,8 +24,8 @@ class BelongsToMany extends Relation
     protected $middle;
 
     /**
-     * 架构函数
-     * @access base
+     * 构造函数
+     * @access public
      * @param Model  $parent     上级模型对象
      * @param string $model      模型名
      * @param string $table      中间表名
@@ -54,7 +54,7 @@ class BelongsToMany extends Relation
         $localKey   = $this->localKey;
         $middle     = $this->middle;
         if ($closure) {
-            call_user_func_array($closure, [& $this->query]);
+            call_user_func_array($closure, [ & $this->query]);
         }
         // 关联查询
         $pk                              = $this->parent->getPk();
@@ -77,8 +77,33 @@ class BelongsToMany extends Relation
     }
 
     /**
+     * 根据关联条件查询当前模型
+     * @access public
+     * @param string  $operator 比较操作符
+     * @param integer $count    个数
+     * @param string  $id       关联表的统计字段
+     * @param string  $joinType JOIN类型
+     * @return Query
+     */
+    public function has($operator = '>=', $count = 1, $id = '*', $joinType = 'INNER')
+    {
+        return $this->parent;
+    }
+
+    /**
+     * 根据关联条件查询当前模型
+     * @access public
+     * @param mixed $where 查询条件（数组或者闭包）
+     * @return Query
+     */
+    public function hasWhere($where = [])
+    {
+        throw new Exception('relation not support: hasWhere');
+    }
+
+    /**
      * 预载入关联查询（数据集）
-     * @access base
+     * @access public
      * @param array    $resultSet   数据集
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -122,7 +147,7 @@ class BelongsToMany extends Relation
 
     /**
      * 预载入关联查询（单个数据）
-     * @access base
+     * @access public
      * @param Model    $result      数据对象
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -147,7 +172,7 @@ class BelongsToMany extends Relation
 
     /**
      * 关联统计
-     * @access base
+     * @access public
      * @param Model    $result  数据对象
      * @param \Closure $closure 闭包
      * @return integer
@@ -165,7 +190,7 @@ class BelongsToMany extends Relation
 
     /**
      * 获取关联统计子查询
-     * @access base
+     * @access public
      * @param \Closure $closure 闭包
      * @return string
      */
@@ -174,14 +199,14 @@ class BelongsToMany extends Relation
         return $this->belongsToManyQuery($this->middle, $this->foreignKey, $this->localKey, [
             'pivot.' . $this->localKey => [
                 'exp',
-                '=' . $this->parent->getTable() . '.' . $this->parent->getPk()
-            ]
+                '=' . $this->parent->getTable() . '.' . $this->parent->getPk(),
+            ],
         ])->fetchSql()->count();
     }
 
     /**
      * 多对多 关联模型预查询
-     * @access base
+     * @access public
      * @param array  $where       关联预查询条件
      * @param string $relation    关联名
      * @param string $subRelation 子关联
@@ -213,7 +238,7 @@ class BelongsToMany extends Relation
 
     /**
      * BELONGS TO MANY 关联查询
-     * @access base
+     * @access public
      * @param string $table      中间表名
      * @param string $foreignKey 关联模型关联键
      * @param string $localKey   当前模型关联键
@@ -233,7 +258,7 @@ class BelongsToMany extends Relation
 
     /**
      * 保存（新增）当前关联数据对象
-     * @access base
+     * @access public
      * @param mixed $data  数据 可以使用数组 关联模型对象 和 关联对象的主键
      * @param array $pivot 中间表额外数据
      * @return integer
@@ -246,7 +271,7 @@ class BelongsToMany extends Relation
 
     /**
      * 批量保存当前关联数据对象
-     * @access base
+     * @access public
      * @param array $dataSet   数据集
      * @param array $pivot     中间表额外数据
      * @param bool  $samePivot 额外数据是否相同
@@ -268,10 +293,10 @@ class BelongsToMany extends Relation
 
     /**
      * 附加关联的一个中间表数据
-     * @access base
+     * @access public
      * @param mixed $data  数据 可以使用数组、关联模型对象 或者 关联对象的主键
      * @param array $pivot 中间表额外数据
-     * @return int
+     * @return array|Pivot
      * @throws Exception
      */
     public function attach($data, $pivot = [])
@@ -301,7 +326,12 @@ class BelongsToMany extends Relation
             $ids                    = (array) $id;
             foreach ($ids as $id) {
                 $pivot[$this->foreignKey] = $id;
-                $result                   = $this->query->table($this->middle)->insert($pivot, true);
+                $this->query->table($this->middle)->insert($pivot, true);
+                $result[] = new Pivot($pivot, $this->middle);
+            }
+            if (count($result) == 1) {
+                // 返回中间表模型对象
+                $result = $result[0];
             }
             return $result;
         } else {
@@ -311,7 +341,7 @@ class BelongsToMany extends Relation
 
     /**
      * 解除关联的一个中间表数据
-     * @access base
+     * @access public
      * @param integer|array $data        数据 可以使用关联对象的主键
      * @param bool          $relationDel 是否同时删除关联表数据
      * @return integer

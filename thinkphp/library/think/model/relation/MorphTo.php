@@ -25,8 +25,8 @@ class MorphTo extends Relation
     protected $alias;
 
     /**
-     * 架构函数
-     * @access base
+     * 构造函数
+     * @access public
      * @param Model  $parent    上级模型对象
      * @param string $morphType 多态字段名
      * @param string $morphKey  外键名
@@ -58,8 +58,33 @@ class MorphTo extends Relation
     }
 
     /**
+     * 根据关联条件查询当前模型
+     * @access public
+     * @param string  $operator 比较操作符
+     * @param integer $count    个数
+     * @param string  $id       关联表的统计字段
+     * @param string  $joinType JOIN类型
+     * @return Query
+     */
+    public function has($operator = '>=', $count = 1, $id = '*', $joinType = 'INNER')
+    {
+        return $this->parent;
+    }
+
+    /**
+     * 根据关联条件查询当前模型
+     * @access public
+     * @param mixed $where 查询条件（数组或者闭包）
+     * @return Query
+     */
+    public function hasWhere($where = [])
+    {
+        throw new Exception('relation not support: hasWhere');
+    }
+
+    /**
      * 解析模型的完整命名空间
-     * @access base
+     * @access public
      * @param string $model 模型名（或者完整类名）
      * @return string
      */
@@ -79,7 +104,7 @@ class MorphTo extends Relation
 
     /**
      * 设置多态别名
-     * @access base
+     * @access public
      * @param array $alias 别名定义
      * @return $this
      */
@@ -90,8 +115,18 @@ class MorphTo extends Relation
     }
 
     /**
+     * 移除关联查询参数
+     * @access public
+     * @return $this
+     */
+    public function removeOption()
+    {
+        return $this;
+    }
+
+    /**
      * 预载入关联查询
-     * @access base
+     * @access public
      * @param array    $resultSet   数据集
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -140,7 +175,7 @@ class MorphTo extends Relation
 
     /**
      * 预载入关联查询
-     * @access base
+     * @access public
      * @param Model    $result      数据对象
      * @param string   $relation    当前关联名
      * @param string   $subRelation 子关联名
@@ -158,7 +193,7 @@ class MorphTo extends Relation
 
     /**
      * 关联统计
-     * @access base
+     * @access public
      * @param Model    $result  数据对象
      * @param \Closure $closure 闭包
      * @return integer
@@ -169,7 +204,7 @@ class MorphTo extends Relation
 
     /**
      * 多态MorphTo 关联模型预查询
-     * @access   base
+     * @access   public
      * @param object $model       关联模型对象
      * @param string $relation    关联名
      * @param        $result

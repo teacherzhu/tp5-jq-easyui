@@ -102,8 +102,8 @@ class Validate
     protected $batch = false;
 
     /**
-     * 架构函数
-     * @access base
+     * 构造函数
+     * @access public
      * @param array $rules 验证规则
      * @param array $message 验证提示信息
      * @param array $field 验证字段描述信息
@@ -117,7 +117,7 @@ class Validate
 
     /**
      * 实例化验证
-     * @access base
+     * @access public
      * @param array     $rules 验证规则
      * @param array     $message 验证提示信息
      * @param array     $field 验证字段描述信息
@@ -150,7 +150,7 @@ class Validate
 
     /**
      * 注册验证（类型）规则
-     * @access base
+     * @access public
      * @param string    $type  验证规则类型
      * @param mixed     $callback callback方法(或闭包)
      * @return void
@@ -182,7 +182,7 @@ class Validate
 
     /**
      * 设置提示信息
-     * @access base
+     * @access public
      * @param string|array  $name  字段名称
      * @param string        $message 提示信息
      * @return Validate
@@ -199,7 +199,7 @@ class Validate
 
     /**
      * 设置验证场景
-     * @access base
+     * @access public
      * @param string|array  $name  场景名或者场景设置数组
      * @param mixed         $fields 要验证的字段
      * @return Validate
@@ -220,7 +220,7 @@ class Validate
 
     /**
      * 判断是否存在某个验证场景
-     * @access base
+     * @access public
      * @param string $name 场景名
      * @return bool
      */
@@ -231,7 +231,7 @@ class Validate
 
     /**
      * 设置批量验证
-     * @access base
+     * @access public
      * @param bool $batch  是否批量验证
      * @return Validate
      */
@@ -243,7 +243,7 @@ class Validate
 
     /**
      * 数据自动验证
-     * @access base
+     * @access public
      * @param array     $data  数据
      * @param mixed     $rules  验证规则
      * @param string    $scene 验证场景
@@ -568,7 +568,7 @@ class Validate
                 break;
             case 'ip':
                 // 是否为IP地址
-                $result = $this->filter($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6);
+                $result = $this->filter($value, [FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6]);
                 break;
             case 'url':
                 // 是否为一个URL地址
@@ -656,7 +656,7 @@ class Validate
         if (!in_array($rule, ['ipv4', 'ipv6'])) {
             $rule = 'ipv4';
         }
-        return $this->filter($value, FILTER_VALIDATE_IP, 'ipv6' == $rule ? FILTER_FLAG_IPV6 : FILTER_FLAG_IPV4);
+        return $this->filter($value, [FILTER_VALIDATE_IP, 'ipv6' == $rule ? FILTER_FLAG_IPV6 : FILTER_FLAG_IPV4]);
     }
 
     /**
@@ -872,6 +872,7 @@ class Validate
             list($rule, $param) = explode(',', $rule);
         } elseif (is_array($rule)) {
             $param = isset($rule[1]) ? $rule[1] : null;
+            $rule  = $rule[0];
         } else {
             $param = null;
         }

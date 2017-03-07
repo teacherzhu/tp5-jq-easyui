@@ -39,7 +39,7 @@ class Template
         'cache_prefix'       => '', // 模板缓存前缀标识，可以动态改变
         'cache_time'         => 0, // 模板缓存有效期 0 为永久，(以数字为值，单位:秒)
         'layout_on'          => false, // 布局模板开关
-        'layout_name'        => 'template', // 布局模板入口文件
+        'layout_name'        => 'layout', // 布局模板入口文件
         'layout_item'        => '{__CONTENT__}', // 布局模板的内容替换标识
         'taglib_begin'       => '{', // 标签库标签开始标记
         'taglib_end'         => '}', // 标签库标签结束标记
@@ -57,8 +57,8 @@ class Template
     protected $storage;
 
     /**
-     * 架构函数
-     * @access base
+     * 构造函数
+     * @access public
      */
     public function __construct(array $config = [])
     {
@@ -91,7 +91,7 @@ class Template
 
     /**
      * 模板变量赋值
-     * @access base
+     * @access public
      * @param mixed $name
      * @param mixed $value
      * @return void
@@ -107,7 +107,7 @@ class Template
 
     /**
      * 模板引擎参数赋值
-     * @access base
+     * @access public
      * @param mixed $name
      * @param mixed $value
      */
@@ -118,7 +118,7 @@ class Template
 
     /**
      * 模板引擎配置项
-     * @access base
+     * @access public
      * @param array|string $config
      * @return void|array
      */
@@ -135,7 +135,7 @@ class Template
 
     /**
      * 模板变量获取
-     * @access base
+     * @access public
      * @param  string $name 变量名
      * @return mixed
      */
@@ -159,7 +159,7 @@ class Template
 
     /**
      * 渲染模板文件
-     * @access base
+     * @access public
      * @param string    $template 模板文件
      * @param array     $vars 模板变量
      * @param array     $config 模板参数
@@ -206,7 +206,7 @@ class Template
 
     /**
      * 渲染模板内容
-     * @access base
+     * @access public
      * @param string    $content 模板内容
      * @param array     $vars 模板变量
      * @param array     $config 模板参数
@@ -231,7 +231,7 @@ class Template
 
     /**
      * 设置布局
-     * @access base
+     * @access public
      * @param mixed     $name 布局模板名称 false 则关闭布局
      * @param string    $replace 布局模板内容替换标识
      * @return object
@@ -298,7 +298,7 @@ class Template
 
     /**
      * 检查编译缓存是否存在
-     * @access base
+     * @access public
      * @param string $cacheId 缓存的id
      * @return boolean
      */
@@ -361,7 +361,7 @@ class Template
     /**
      * 模板解析入口
      * 支持普通标签和TagLib解析 支持自定义标签库
-     * @access base
+     * @access public
      * @param string $content 要解析的模板内容
      * @return void
      */
@@ -445,7 +445,7 @@ class Template
     private function parseLayout(&$content)
     {
         // 读取模板中的布局标签
-        if (preg_match($this->getRegex('template'), $content, $matches)) {
+        if (preg_match($this->getRegex('layout'), $content, $matches)) {
             // 替换Layout标签
             $content = str_replace($matches[0], '', $content);
             // 解析Layout标签
@@ -673,7 +673,7 @@ class Template
 
     /**
      * TagLib库解析
-     * @access base
+     * @access public
      * @param  string   $tagLib 要解析的标签库
      * @param  string   $content 要解析的模板内容
      * @param  boolean  $hide 是否隐藏标签库前缀
@@ -695,7 +695,7 @@ class Template
 
     /**
      * 分析标签属性
-     * @access base
+     * @access public
      * @param  string   $str 属性字符串
      * @param  string   $name 不为空时返回指定的属性名
      * @return array
@@ -836,7 +836,7 @@ class Template
     /**
      * 模板变量解析,支持使用函数
      * 格式： {$varname|function1|function2=arg1,arg2}
-     * @access base
+     * @access public
      * @param  string $varStr 变量数据
      * @return void
      */
@@ -896,7 +896,7 @@ class Template
     /**
      * 对模板中使用了函数的变量进行解析
      * 格式 {$varname|function1|function2=arg1,arg2}
-     * @access base
+     * @access public
      * @param  string $varStr 变量字符串
      * @return void
      */
@@ -956,7 +956,7 @@ class Template
     /**
      * 特殊模板变量解析
      * 格式 以 $Think. 打头的变量属于特殊模板变量
-     * @access base
+     * @access public
      * @param  array $vars 变量数组
      * @return string
      */
@@ -1133,7 +1133,7 @@ class Template
                 case 'include':
                     $name = 'file';
                 case 'taglib':
-                case 'template':
+                case 'layout':
                 case 'extend':
                     if (empty($name)) {
                         $name = 'name';

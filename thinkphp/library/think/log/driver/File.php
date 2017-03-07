@@ -35,7 +35,7 @@ class File
 
     /**
      * 日志写入接口
-     * @access base
+     * @access public
      * @param array $log 日志信息
      * @param bool  $depr 是否写入分割线
      * @return bool

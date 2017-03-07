@@ -40,7 +40,7 @@ abstract class Relation
 
     /**
      * 获取关联的所属模型
-     * @access base
+     * @access public
      * @return Model
      */
     public function getParent()
@@ -50,7 +50,7 @@ abstract class Relation
 
     /**
      * 获取当前的关联模型类
-     * @access base
+     * @access public
      * @return string
      */
     public function getModel()
@@ -60,7 +60,7 @@ abstract class Relation
 
     /**
      * 获取关联的查询对象
-     * @access base
+     * @access public
      * @return Query
      */
     public function getQuery()
@@ -70,7 +70,7 @@ abstract class Relation
 
     /**
      * 封装关联数据集
-     * @access base
+     * @access public
      * @param array $resultSet 数据集
      * @return mixed
      */
@@ -81,7 +81,7 @@ abstract class Relation
 
     /**
      * 移除关联查询参数
-     * @access base
+     * @access public
      * @return $this
      */
     public function removeOption()

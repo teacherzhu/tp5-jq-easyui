@@ -61,7 +61,7 @@ class App
 
     /**
      * 执行应用程序
-     * @access base
+     * @access public
      * @param Request $request Request对象
      * @return Response
      * @throws Exception
@@ -118,7 +118,7 @@ class App
             // 监听app_begin
             Hook::listen('app_begin', $dispatch);
             // 请求缓存检查
-            $request->cache($config['request_cache'], $config['request_cache_expire']);
+            $request->cache($config['request_cache'], $config['request_cache_expire'], $config['request_cache_except']);
 
             switch ($dispatch['type']) {
                 case 'redirect':
@@ -176,7 +176,7 @@ class App
 
     /**
      * 设置当前请求的调度信息
-     * @access base
+     * @access public
      * @param array|string  $dispatch 调度信息
      * @param string        $type 调度类型
      * @return void
@@ -188,7 +188,7 @@ class App
 
     /**
      * 执行函数或者闭包方法 支持参数调用
-     * @access base
+     * @access public
      * @param string|array|\Closure $function 函数或者闭包
      * @param array                 $vars     变量
      * @return mixed
@@ -204,7 +204,7 @@ class App
 
     /**
      * 调用反射执行类的方法 支持参数绑定
-     * @access base
+     * @access public
      * @param string|array $method 方法
      * @param array        $vars   变量
      * @return mixed
@@ -226,7 +226,7 @@ class App
 
     /**
      * 调用反射执行类的实例化 支持依赖注入
-     * @access base
+     * @access public
      * @param string    $class 类名
      * @param array     $vars  变量
      * @return mixed
@@ -245,7 +245,7 @@ class App
 
     /**
      * 绑定参数
-     * @access base
+     * @access public
      * @param \ReflectionMethod|\ReflectionFunction $reflect 反射类
      * @param array                                 $vars    变量
      * @return array
@@ -300,7 +300,7 @@ class App
 
     /**
      * 执行模块
-     * @access base
+     * @access public
      * @param array $result 模块/控制器/操作
      * @param array $config 配置参数
      * @param bool  $convert 是否自动转换控制器和操作名
@@ -336,7 +336,7 @@ class App
                 $request->module($module);
                 $config = self::init($module);
                 // 模块请求缓存检查
-                $request->cache($config['request_cache'], $config['request_cache_expire']);
+                $request->cache($config['request_cache'], $config['request_cache_expire'], $config['request_cache_except']);
             } else {
                 throw new HttpException(404, 'module not exists:' . $module);
             }
@@ -445,7 +445,7 @@ class App
 
     /**
      * 初始化应用或模块
-     * @access base
+     * @access public
      * @param string $module 模块名
      * @return array
      */
@@ -503,7 +503,7 @@ class App
 
     /**
      * URL路由检测（根据PATH_INFO)
-     * @access base
+     * @access public
      * @param  \think\Request $request
      * @param  array          $config
      * @return array
@@ -554,7 +554,7 @@ class App
 
     /**
      * 设置应用的路由检测机制
-     * @access base
+     * @access public
      * @param  bool $route 是否需要检测路由
      * @param  bool $must  是否强制检测路由
      * @return void

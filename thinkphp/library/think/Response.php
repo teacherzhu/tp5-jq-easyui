@@ -40,8 +40,8 @@ class Response
     protected $content = null;
 
     /**
-     * 架构函数
-     * @access   base
+     * 构造函数
+     * @access   public
      * @param mixed $data    输出数据
      * @param int   $code
      * @param array $header
@@ -60,7 +60,7 @@ class Response
 
     /**
      * 创建Response对象
-     * @access base
+     * @access public
      * @param mixed  $data    输出数据
      * @param string $type    输出类型
      * @param int    $code
@@ -84,7 +84,7 @@ class Response
 
     /**
      * 发送数据到客户端
-     * @access base
+     * @access public
      * @return mixed
      * @throws \InvalidArgumentException
      */
@@ -146,7 +146,7 @@ class Response
 
     /**
      * 输出的参数
-     * @access base
+     * @access public
      * @param mixed $options 输出参数
      * @return $this
      */
@@ -158,7 +158,7 @@ class Response
 
     /**
      * 输出数据设置
-     * @access base
+     * @access public
      * @param mixed $data 输出数据
      * @return $this
      */
@@ -170,7 +170,7 @@ class Response
 
     /**
      * 设置响应头
-     * @access base
+     * @access public
      * @param string|array $name  参数名
      * @param string       $value 参数值
      * @return $this

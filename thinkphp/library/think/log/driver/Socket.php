@@ -43,9 +43,9 @@ class Socket
     protected $allowForceClientIds = []; //配置强制推送且被授权的client_id
 
     /**
-     * 架构函数
+     * 构造函数
      * @param array $config 缓存参数
-     * @access base
+     * @access public
      */
     public function __construct(array $config = [])
     {
@@ -56,7 +56,7 @@ class Socket
 
     /**
      * 调试输出接口
-     * @access base
+     * @access public
      * @param array     $log 日志信息
      * @return bool
      */

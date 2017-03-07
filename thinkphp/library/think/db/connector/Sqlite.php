@@ -20,6 +20,8 @@ use think\db\Connection;
 class Sqlite extends Connection
 {
 
+    protected $builder = '\\think\\db\\builder\\Sqlite';
+
     /**
      * 解析pdo连接的dsn信息
      * @access protected
@@ -34,7 +36,7 @@ class Sqlite extends Connection
 
     /**
      * 取得数据表的字段信息
-     * @access base
+     * @access public
      * @param string $tableName
      * @return array
      */
@@ -68,7 +70,7 @@ class Sqlite extends Connection
 
     /**
      * 取得数据库的表信息
-     * @access base
+     * @access public
      * @param string $dbName
      * @return array
      */

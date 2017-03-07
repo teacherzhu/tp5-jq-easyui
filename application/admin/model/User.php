@@ -9,6 +9,7 @@
 namespace app\admin\model;
 
 use think\Model;
+use think\Request;
 
 class User extends model
 {
@@ -18,8 +19,7 @@ class User extends model
     public function login($param)
     {
         if (!is_login()) {
-
-
+            $request = Request::instance();
             $username = trim($param['username']);//I("post.username", "", "trim");
             $password = trim($param['password']);//I("post.password", "", "trim");
 
@@ -35,7 +35,7 @@ class User extends model
             $user_info = db($this->table)->where($map)->field('password,create_time,update_time', true)->find();
 
             if ($user_info) {
-                $this->save(['login_ip'  => client_ip(), 'login_time' => NOW_TIME],$map);
+                $this->save(['login_ip'  => $request->ip(), 'login_time' => time()],$map);
                 session(config('auth_key'), $user_info ['id']);
                 session('user_info', $user_info);
                 return message('200','index');

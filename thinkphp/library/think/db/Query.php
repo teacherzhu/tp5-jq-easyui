@@ -54,8 +54,8 @@ class Query
     private static $event = [];
 
     /**
-     * 架构函数
-     * @access base
+     * 构造函数
+     * @access public
      * @param Connection $connection 数据库对象实例
      * @param string     $model      模型名
      */
@@ -70,7 +70,7 @@ class Query
 
     /**
      * 利用__call方法实现一些特殊的Model方法
-     * @access base
+     * @access public
      * @param string $method 方法名称
      * @param array  $args   调用参数
      * @return mixed
@@ -96,7 +96,7 @@ class Query
 
     /**
      * 获取当前的数据库Connection对象
-     * @access base
+     * @access public
      * @return Connection
      */
     public function getConnection()
@@ -106,7 +106,7 @@ class Query
 
     /**
      * 切换当前的数据库连接
-     * @access base
+     * @access public
      * @param mixed $config
      * @return $this
      */
@@ -124,14 +124,13 @@ class Query
      */
     protected function setBuilder()
     {
-        $builder       = $this->connection->getConfig('builder') ?: $this->connection->getConfig('type');
-        $class         = false !== strpos($builder, '\\') ? $builder : '\\think\\db\\builder\\' . ucfirst($builder);
+        $class         = $this->connection->getBuilder();
         $this->builder = new $class($this->connection, $this);
     }
 
     /**
      * 获取当前的模型对象名
-     * @access base
+     * @access public
      * @return string
      */
     public function getModel()
@@ -141,7 +140,7 @@ class Query
 
     /**
      * 获取当前的builder实例对象
-     * @access base
+     * @access public
      * @return Builder
      */
     public function getBuilder()
@@ -151,7 +150,7 @@ class Query
 
     /**
      * 指定默认的数据表名（不含前缀）
-     * @access base
+     * @access public
      * @param string $name
      * @return $this
      */
@@ -163,7 +162,7 @@ class Query
 
     /**
      * 指定默认数据表名（含前缀）
-     * @access base
+     * @access public
      * @param string $table 表名
      * @return $this
      */
@@ -175,7 +174,7 @@ class Query
 
     /**
      * 得到当前或者指定名称的数据表
-     * @access base
+     * @access public
      * @param string $name
      * @return string
      */
@@ -195,7 +194,7 @@ class Query
 
     /**
      * 将SQL语句中的__TABLE_NAME__字符串替换成带前缀的表名（小写）
-     * @access base
+     * @access public
      * @param string $sql sql语句
      * @return string
      */
@@ -212,7 +211,7 @@ class Query
 
     /**
      * 执行查询 返回数据集
-     * @access base
+     * @access public
      * @param string      $sql    sql指令
      * @param array       $bind   参数绑定
      * @param boolean     $master 是否在主服务器读操作
@@ -228,7 +227,7 @@ class Query
 
     /**
      * 执行语句
-     * @access base
+     * @access public
      * @param string $sql  sql指令
      * @param array  $bind 参数绑定
      * @return int
@@ -242,7 +241,7 @@ class Query
 
     /**
      * 获取最近插入的ID
-     * @access base
+     * @access public
      * @param string $sequence 自增序列名
      * @return string
      */
@@ -253,7 +252,7 @@ class Query
 
     /**
      * 获取最近一次查询的sql语句
-     * @access base
+     * @access public
      * @return string
      */
     public function getLastSql()
@@ -263,7 +262,7 @@ class Query
 
     /**
      * 执行数据库事务
-     * @access base
+     * @access public
      * @param callable $callback 数据操作方法回调
      * @return mixed
      */
@@ -274,7 +273,7 @@ class Query
 
     /**
      * 启动事务
-     * @access base
+     * @access public
      * @return void
      */
     public function startTrans()
@@ -284,7 +283,7 @@ class Query
 
     /**
      * 用于非自动提交状态下面的查询提交
-     * @access base
+     * @access public
      * @return void
      * @throws PDOException
      */
@@ -295,7 +294,7 @@ class Query
 
     /**
      * 事务回滚
-     * @access base
+     * @access public
      * @return void
      * @throws PDOException
      */
@@ -307,7 +306,7 @@ class Query
     /**
      * 批处理执行SQL语句
      * 批处理的指令都认为是execute操作
-     * @access base
+     * @access public
      * @param array $sql SQL批处理指令
      * @return boolean
      */
@@ -318,7 +317,7 @@ class Query
 
     /**
      * 获取数据库的配置参数
-     * @access base
+     * @access public
      * @param string $name 参数名称
      * @return boolean
      */
@@ -329,7 +328,7 @@ class Query
 
     /**
      * 得到分表的的数据表名
-     * @access base
+     * @access public
      * @param array  $data  操作的数据
      * @param string $field 分表依据的字段
      * @param array  $rule  分表规则
@@ -387,7 +386,7 @@ class Query
 
     /**
      * 得到某个字段的值
-     * @access base
+     * @access public
      * @param string $field   字段名
      * @param mixed  $default 默认值
      * @param bool   $force   强制转为数字类型
@@ -420,11 +419,7 @@ class Query
             }
             if (isset($cache)) {
                 // 缓存数据
-                if (isset($cache['tag'])) {
-                    Cache::tag($cache['tag'])->set($key, $result, $cache['expire']);
-                } else {
-                    Cache::set($key, $result, $cache['expire']);
-                }
+                $this->cacheData($key, $result, $cache);
             }
         } else {
             // 清空查询条件
@@ -435,7 +430,7 @@ class Query
 
     /**
      * 得到某个列的数组
-     * @access base
+     * @access public
      * @param string $field 字段名 多个字段用逗号分隔
      * @param string $key   索引
      * @return array
@@ -492,11 +487,7 @@ class Query
             }
             if (isset($cache) && isset($guid)) {
                 // 缓存数据
-                if (isset($cache['tag'])) {
-                    Cache::tag($cache['tag'])->set($guid, $result, $cache['expire']);
-                } else {
-                    Cache::set($guid, $result, $cache['expire']);
-                }
+                $this->cacheData($guid, $result, $cache);
             }
         } else {
             // 清空查询条件
@@ -507,7 +498,7 @@ class Query
 
     /**
      * COUNT查询
-     * @access base
+     * @access public
      * @param string $field 字段名
      * @return integer|string
      */
@@ -525,7 +516,7 @@ class Query
 
     /**
      * SUM查询
-     * @access base
+     * @access public
      * @param string $field 字段名
      * @return float|int
      */
@@ -536,7 +527,7 @@ class Query
 
     /**
      * MIN查询
-     * @access base
+     * @access public
      * @param string $field 字段名
      * @return mixed
      */
@@ -547,7 +538,7 @@ class Query
 
     /**
      * MAX查询
-     * @access base
+     * @access public
      * @param string $field 字段名
      * @return mixed
      */
@@ -558,7 +549,7 @@ class Query
 
     /**
      * AVG查询
-     * @access base
+     * @access public
      * @param string $field 字段名
      * @return float|int
      */
@@ -570,7 +561,7 @@ class Query
     /**
      * 设置记录的某个字段值
      * 支持使用数据库字段和方法
-     * @access base
+     * @access public
      * @param string|array $field 字段名
      * @param mixed        $value 字段值
      * @return integer
@@ -587,7 +578,7 @@ class Query
 
     /**
      * 字段值(延迟)增长
-     * @access base
+     * @access public
      * @param string  $field    字段名
      * @param integer $step     增长值
      * @param integer $lazyTime 延时时间(s)
@@ -616,7 +607,7 @@ class Query
 
     /**
      * 字段值（延迟）减少
-     * @access base
+     * @access public
      * @param string  $field    字段名
      * @param integer $step     减少值
      * @param integer $lazyTime 延时时间(s)
@@ -674,7 +665,7 @@ class Query
 
     /**
      * 查询SQL组装 join
-     * @access base
+     * @access public
      * @param mixed  $join      关联的表名
      * @param mixed  $condition 条件
      * @param string $type      JOIN类型
@@ -700,7 +691,7 @@ class Query
     /**
      * 获取Join表名及别名 支持
      * ['prefix_table或者子查询'=>'alias'] 'prefix_table alias' 'table alias'
-     * @access base
+     * @access public
      * @param array|string $join
      * @return array|string
      */
@@ -742,7 +733,7 @@ class Query
 
     /**
      * 查询SQL组装 union
-     * @access base
+     * @access public
      * @param mixed   $union
      * @param boolean $all
      * @return $this
@@ -761,7 +752,7 @@ class Query
 
     /**
      * 指定查询字段 支持字段排除和指定数据表
-     * @access base
+     * @access public
      * @param mixed   $field
      * @param boolean $except    是否排除
      * @param string  $tableName 数据表名
@@ -806,7 +797,7 @@ class Query
 
     /**
      * 设置数据
-     * @access base
+     * @access public
      * @param mixed $field 字段名或者数据
      * @param mixed $value 字段值
      * @return $this
@@ -823,7 +814,7 @@ class Query
 
     /**
      * 字段值增长
-     * @access base
+     * @access public
      * @param string|array $field 字段名
      * @param integer      $step  增长值
      * @return $this
@@ -839,7 +830,7 @@ class Query
 
     /**
      * 字段值减少
-     * @access base
+     * @access public
      * @param string|array $field 字段名
      * @param integer      $step  增长值
      * @return $this
@@ -855,7 +846,7 @@ class Query
 
     /**
      * 使用表达式设置数据
-     * @access base
+     * @access public
      * @param string $field 字段名
      * @param string $value 字段值
      * @return $this
@@ -868,7 +859,7 @@ class Query
 
     /**
      * 指定JOIN查询字段
-     * @access base
+     * @access public
      * @param string|array $table 数据表
      * @param string|array $field 查询字段
      * @param string|array $on    JOIN条件
@@ -878,7 +869,7 @@ class Query
     public function view($join, $field = true, $on = null, $type = 'INNER')
     {
         $this->options['view'] = true;
-        if (is_array($join) && is_null($field)) {
+        if (is_array($join) && key($join) !== 0) {
             foreach ($join as $key => $val) {
                 $this->view($key, $val[0], isset($val[1]) ? $val[1] : null, isset($val[2]) ? $val[2] : 'INNER');
             }
@@ -919,7 +910,7 @@ class Query
 
     /**
      * 设置分表规则
-     * @access base
+     * @access public
      * @param array  $data  操作的数据
      * @param string $field 分表依据的字段
      * @param array  $rule  分表规则
@@ -933,7 +924,7 @@ class Query
 
     /**
      * 指定AND查询条件
-     * @access base
+     * @access public
      * @param mixed $field     查询字段
      * @param mixed $op        查询表达式
      * @param mixed $condition 查询条件
@@ -949,7 +940,7 @@ class Query
 
     /**
      * 指定OR查询条件
-     * @access base
+     * @access public
      * @param mixed $field     查询字段
      * @param mixed $op        查询表达式
      * @param mixed $condition 查询条件
@@ -965,7 +956,7 @@ class Query
 
     /**
      * 指定XOR查询条件
-     * @access base
+     * @access public
      * @param mixed $field     查询字段
      * @param mixed $op        查询表达式
      * @param mixed $condition 查询条件
@@ -981,7 +972,7 @@ class Query
 
     /**
      * 指定Null查询条件
-     * @access base
+     * @access public
      * @param mixed  $field 查询字段
      * @param string $logic 查询逻辑 and or xor
      * @return $this
@@ -994,7 +985,7 @@ class Query
 
     /**
      * 指定NotNull查询条件
-     * @access base
+     * @access public
      * @param mixed  $field 查询字段
      * @param string $logic 查询逻辑 and or xor
      * @return $this
@@ -1007,7 +998,7 @@ class Query
 
     /**
      * 指定Exists查询条件
-     * @access base
+     * @access public
      * @param mixed  $condition 查询条件
      * @param string $logic     查询逻辑 and or xor
      * @return $this
@@ -1020,7 +1011,7 @@ class Query
 
     /**
      * 指定NotExists查询条件
-     * @access base
+     * @access public
      * @param mixed  $condition 查询条件
      * @param string $logic     查询逻辑 and or xor
      * @return $this
@@ -1033,7 +1024,7 @@ class Query
 
     /**
      * 指定In查询条件
-     * @access base
+     * @access public
      * @param mixed  $field     查询字段
      * @param mixed  $condition 查询条件
      * @param string $logic     查询逻辑 and or xor
@@ -1047,7 +1038,7 @@ class Query
 
     /**
      * 指定NotIn查询条件
-     * @access base
+     * @access public
      * @param mixed  $field     查询字段
      * @param mixed  $condition 查询条件
      * @param string $logic     查询逻辑 and or xor
@@ -1061,7 +1052,7 @@ class Query
 
     /**
      * 指定Like查询条件
-     * @access base
+     * @access public
      * @param mixed  $field     查询字段
      * @param mixed  $condition 查询条件
      * @param string $logic     查询逻辑 and or xor
@@ -1075,7 +1066,7 @@ class Query
 
     /**
      * 指定NotLike查询条件
-     * @access base
+     * @access public
      * @param mixed  $field     查询字段
      * @param mixed  $condition 查询条件
      * @param string $logic     查询逻辑 and or xor
@@ -1089,7 +1080,7 @@ class Query
 
     /**
      * 指定Between查询条件
-     * @access base
+     * @access public
      * @param mixed  $field     查询字段
      * @param mixed  $condition 查询条件
      * @param string $logic     查询逻辑 and or xor
@@ -1103,7 +1094,7 @@ class Query
 
     /**
      * 指定NotBetween查询条件
-     * @access base
+     * @access public
      * @param mixed  $field     查询字段
      * @param mixed  $condition 查询条件
      * @param string $logic     查询逻辑 and or xor
@@ -1117,7 +1108,7 @@ class Query
 
     /**
      * 指定Exp查询条件
-     * @access base
+     * @access public
      * @param mixed  $field     查询字段
      * @param mixed  $condition 查询条件
      * @param string $logic     查询逻辑 and or xor
@@ -1131,7 +1122,7 @@ class Query
 
     /**
      * 分析查询表达式
-     * @access base
+     * @access public
      * @param string                $logic     查询逻辑 and or xor
      * @param string|array|\Closure $field     查询字段
      * @param mixed                 $op        查询表达式
@@ -1208,7 +1199,7 @@ class Query
 
     /**
      * 检查是否存在一个字段多次查询条件
-     * @access base
+     * @access public
      * @param string $field 查询字段
      * @param string $logic 查询逻辑 and or xor
      * @return bool
@@ -1220,7 +1211,7 @@ class Query
 
     /**
      * 去除某个查询条件
-     * @access base
+     * @access public
      * @param string $field 查询字段
      * @param string $logic 查询逻辑 and or xor
      * @return $this
@@ -1236,7 +1227,7 @@ class Query
 
     /**
      * 去除查询参数
-     * @access base
+     * @access public
      * @param string|bool $option 参数名 true 表示去除所有参数
      * @return $this
      */
@@ -1252,7 +1243,7 @@ class Query
 
     /**
      * 指定查询数量
-     * @access base
+     * @access public
      * @param mixed $offset 起始位置
      * @param mixed $length 查询数量
      * @return $this
@@ -1268,7 +1259,7 @@ class Query
 
     /**
      * 指定分页
-     * @access base
+     * @access public
      * @param mixed $page     页数
      * @param mixed $listRows 每页数量
      * @return $this
@@ -1341,7 +1332,7 @@ class Query
 
     /**
      * 指定当前操作的数据表
-     * @access base
+     * @access public
      * @param mixed $table 表名
      * @return $this
      */
@@ -1386,7 +1377,7 @@ class Query
 
     /**
      * USING支持 用于多表删除
-     * @access base
+     * @access public
      * @param mixed $using
      * @return $this
      */
@@ -1398,7 +1389,7 @@ class Query
 
     /**
      * 指定排序 order('id','desc') 或者 order(['id'=>'desc','create_time'=>'desc'])
-     * @access base
+     * @access public
      * @param string|array $field 排序字段
      * @param string       $order 排序
      * @return $this
@@ -1435,7 +1426,7 @@ class Query
 
     /**
      * 查询缓存
-     * @access base
+     * @access public
      * @param mixed   $key    缓存key
      * @param integer $expire 缓存有效期
      * @param string  $tag    缓存标签
@@ -1456,7 +1447,7 @@ class Query
 
     /**
      * 指定group查询
-     * @access base
+     * @access public
      * @param string $group GROUP
      * @return $this
      */
@@ -1468,7 +1459,7 @@ class Query
 
     /**
      * 指定having查询
-     * @access base
+     * @access public
      * @param string $having having
      * @return $this
      */
@@ -1480,7 +1471,7 @@ class Query
 
     /**
      * 指定查询lock
-     * @access base
+     * @access public
      * @param boolean $lock 是否lock
      * @return $this
      */
@@ -1493,7 +1484,7 @@ class Query
 
     /**
      * 指定distinct查询
-     * @access base
+     * @access public
      * @param string $distinct 是否唯一
      * @return $this
      */
@@ -1505,7 +1496,7 @@ class Query
 
     /**
      * 指定数据表别名
-     * @access base
+     * @access public
      * @param mixed $alias 数据表别名
      * @return $this
      */
@@ -1532,7 +1523,7 @@ class Query
 
     /**
      * 指定强制索引
-     * @access base
+     * @access public
      * @param string $force 索引名称
      * @return $this
      */
@@ -1544,7 +1535,7 @@ class Query
 
     /**
      * 查询注释
-     * @access base
+     * @access public
      * @param string $comment 注释
      * @return $this
      */
@@ -1556,7 +1547,7 @@ class Query
 
     /**
      * 获取执行的SQL语句
-     * @access base
+     * @access public
      * @param boolean $fetch 是否返回sql
      * @return $this
      */
@@ -1568,7 +1559,7 @@ class Query
 
     /**
      * 不主动获取数据集
-     * @access base
+     * @access public
      * @param bool $pdo 是否返回 PDOStatement 对象
      * @return $this
      */
@@ -1580,7 +1571,7 @@ class Query
 
     /**
      * 设置从主服务器读取数据
-     * @access base
+     * @access public
      * @return $this
      */
     public function master()
@@ -1591,7 +1582,7 @@ class Query
 
     /**
      * 设置是否严格检查字段名
-     * @access base
+     * @access public
      * @param bool $strict 是否严格检查字段
      * @return $this
      */
@@ -1603,7 +1594,7 @@ class Query
 
     /**
      * 设置查询数据不存在是否抛出异常
-     * @access base
+     * @access public
      * @param bool $fail 数据不存在是否抛出异常
      * @return $this
      */
@@ -1615,7 +1606,7 @@ class Query
 
     /**
      * 设置自增序列名
-     * @access base
+     * @access public
      * @param string $sequence 自增序列名
      * @return $this
      */
@@ -1627,7 +1618,7 @@ class Query
 
     /**
      * 指定数据表主键
-     * @access base
+     * @access public
      * @param string $pk 主键
      * @return $this
      */
@@ -1639,7 +1630,7 @@ class Query
 
     /**
      * 查询日期或者时间
-     * @access base
+     * @access public
      * @param string       $field 日期字段名
      * @param string       $op    比较运算符或者表达式
      * @param string|array $range 比较范围
@@ -1690,7 +1681,7 @@ class Query
 
     /**
      * 获取数据表信息
-     * @access base
+     * @access public
      * @param mixed  $tableName 数据表名 留空自动获取
      * @param string $fetch     获取信息类型 包括 fields type bind pk
      * @return mixed
@@ -1753,7 +1744,7 @@ class Query
 
     /**
      * 获取当前数据表的主键
-     * @access base
+     * @access public
      * @param string|array $options 数据表名或者查询参数
      * @return string|array
      */
@@ -1794,7 +1785,7 @@ class Query
 
     /**
      * 获取字段绑定类型
-     * @access base
+     * @access public
      * @param string $type 字段类型
      * @return integer
      */
@@ -1812,7 +1803,7 @@ class Query
 
     /**
      * 参数绑定
-     * @access base
+     * @access public
      * @param mixed   $key   参数名
      * @param mixed   $value 绑定变量值
      * @param integer $type  绑定类型
@@ -1830,7 +1821,7 @@ class Query
 
     /**
      * 检测参数是否已经绑定
-     * @access base
+     * @access public
      * @param string $key 参数名
      * @return bool
      */
@@ -1853,7 +1844,7 @@ class Query
 
     /**
      * 获取当前的查询参数
-     * @access base
+     * @access public
      * @param string $name 参数名
      * @return mixed
      */
@@ -1868,7 +1859,7 @@ class Query
 
     /**
      * 设置关联查询JOIN预查询
-     * @access base
+     * @access public
      * @param string|array $with 关联方法名称
      * @return $this
      */
@@ -1904,7 +1895,7 @@ class Query
             $relation = Loader::parseName($relation, 1, false);
             $model    = $class->$relation();
             if ($model instanceof OneToOne && 0 == $model->getEagerlyType()) {
-                $model->eagerly($this, $relation, $subRelation, $closure, $first);
+                $model->removeOption()->eagerly($this, $relation, $subRelation, $closure, $first);
                 $first = false;
             } elseif ($closure) {
                 $with[$key] = $closure;
@@ -1921,7 +1912,7 @@ class Query
 
     /**
      * 关联统计
-     * @access base
+     * @access public
      * @param string|array $relation 关联方法名
      * @param bool         $subQuery 是否使用子查询
      * @return $this
@@ -1967,7 +1958,7 @@ class Query
 
     /**
      * 设置当前字段添加的表别名
-     * @access base
+     * @access public
      * @param string $via
      * @return $this
      */
@@ -1979,7 +1970,7 @@ class Query
 
     /**
      * 设置关联查询
-     * @access base
+     * @access public
      * @param string|array $relation 关联名称
      * @return $this
      */
@@ -2001,7 +1992,7 @@ class Query
 
     /**
      * 把主键值转换为查询条件 支持复合主键
-     * @access base
+     * @access public
      * @param array|string $data    主键数据
      * @param mixed        $options 表达式参数
      * @return void
@@ -2047,7 +2038,7 @@ class Query
 
     /**
      * 插入记录
-     * @access base
+     * @access public
      * @param mixed   $data         数据
      * @param boolean $replace      是否replace
      * @param boolean $getLastInsID 返回自增主键
@@ -2071,18 +2062,27 @@ class Query
         // 执行操作
         $result = $this->execute($sql, $bind);
         if ($result) {
+            $sequence  = $sequence ?: (isset($options['sequence']) ? $options['sequence'] : null);
+            $lastInsId = $this->getLastInsID($sequence);
+            if ($lastInsId) {
+                $pk = $this->getPk($options);
+                if (is_string($pk)) {
+                    $data[$pk] = $lastInsId;
+                }
+            }
+            $options['data'] = $data;
             $this->trigger('after_insert', $options);
-        }
-        if ($getLastInsID) {
-            $sequence = $sequence ?: (isset($options['sequence']) ? $options['sequence'] : null);
-            return $this->getLastInsID($sequence);
+
+            if ($getLastInsID) {
+                return $lastInsId;
+            }
         }
         return $result;
     }
 
     /**
      * 插入记录并获取自增ID
-     * @access base
+     * @access public
      * @param mixed   $data     数据
      * @param boolean $replace  是否replace
      * @param string  $sequence 自增序列名
@@ -2095,7 +2095,7 @@ class Query
 
     /**
      * 批量插入记录
-     * @access base
+     * @access public
      * @param mixed $dataSet 数据集
      * @return integer|string
      */
@@ -2121,7 +2121,7 @@ class Query
 
     /**
      * 通过Select方式插入记录
-     * @access base
+     * @access public
      * @param string $fields 要插入的数据表字段名
      * @param string $table  要插入的数据表名
      * @return integer|string
@@ -2147,7 +2147,7 @@ class Query
 
     /**
      * 更新记录
-     * @access base
+     * @access public
      * @param mixed $data 数据
      * @return integer|string
      * @throws Exception
@@ -2158,8 +2158,8 @@ class Query
         $options = $this->parseExpress();
         $data    = array_merge($options['data'], $data);
         $pk      = $this->getPk($options);
-        if (isset($options['cache']) && is_string($options['cache'])) {
-            $key = $options['cache'];
+        if (isset($options['cache']) && is_string($options['cache']['key'])) {
+            $key = $options['cache']['key'];
         }
 
         if (empty($options['where'])) {
@@ -2188,9 +2188,10 @@ class Query
             } else {
                 $options['where']['AND'] = $where;
             }
-        } elseif (is_string($pk) && isset($options['where']['AND'][$pk]) && is_scalar($options['where']['AND'][$pk])) {
-            $key = 'think:' . $options['table'] . '|' . $options['where']['AND'][$pk];
+        } elseif (!isset($key) && is_string($pk) && isset($options['where']['AND'][$pk])) {
+            $key = $this->getCacheKey($options['where']['AND'][$pk], $options);
         }
+
         // 生成UPDATE SQL语句
         $sql = $this->builder->update($data, $options);
         // 获取参数绑定
@@ -2203,10 +2204,19 @@ class Query
             if (isset($key) && Cache::get($key)) {
                 // 删除缓存
                 Cache::rm($key);
+            } elseif (!empty($options['cache']['tag'])) {
+                Cache::clear($options['cache']['tag']);
             }
             // 执行操作
             $result = '' == $sql ? 0 : $this->execute($sql, $bind);
             if ($result) {
+                if (is_string($pk) && isset($where[$pk])) {
+                    $data[$pk] = $where[$pk];
+                } elseif (is_string($pk) && isset($key) && strpos($key, '|')) {
+                    list($a, $val) = explode('|', $key);
+                    $data[$pk]     = $val;
+                }
+                $options['data'] = $data;
                 $this->trigger('after_update', $options);
             }
             return $result;
@@ -2215,7 +2225,7 @@ class Query
 
     /**
      * 执行查询但只返回PDOStatement对象
-     * @access base
+     * @access public
      * @return \PDOStatement|string
      */
     public function getPdo()
@@ -2236,7 +2246,7 @@ class Query
 
     /**
      * 查找记录
-     * @access base
+     * @access public
      * @param array|string|Query|\Closure $data
      * @return Collection|false|\PDOStatement|string
      * @throws DbException
@@ -2279,6 +2289,8 @@ class Query
                 // 获取实际执行的SQL语句
                 return $this->connection->getRealSql($sql, $bind);
             }
+
+            $options['data'] = $data;
             if ($resultSet = $this->trigger('before_select', $options)) {
             } else {
                 // 执行查询操作
@@ -2290,13 +2302,9 @@ class Query
                 }
             }
 
-            if (isset($cache)) {
+            if (isset($cache) && $resultSet) {
                 // 缓存数据集
-                if (isset($cache['tag'])) {
-                    Cache::tag($cache['tag'])->set($key, $resultSet, $cache['expire']);
-                } else {
-                    Cache::set($key, $resultSet, $cache['expire']);
-                }
+                $this->cacheData($key, $resultSet, $cache);
             }
         }
 
@@ -2341,8 +2349,44 @@ class Query
     }
 
     /**
+     * 缓存数据
+     * @access public
+     * @param string    $key    缓存标识
+     * @param mixed     $data   缓存数据
+     * @param array     $config 缓存参数
+     */
+    protected function cacheData($key, $data, $config = [])
+    {
+        if (isset($config['tag'])) {
+            Cache::tag($config['tag'])->set($key, $data, $config['expire']);
+        } else {
+            Cache::set($key, $data, $config['expire']);
+        }
+    }
+
+    /**
+     * 生成缓存标识
+     * @access public
+     * @param mixed     $value   缓存数据
+     * @param array     $options 缓存参数
+     */
+    protected function getCacheKey($value, $options)
+    {
+        if (is_scalar($value)) {
+            $data = $value;
+        } elseif (is_array($value) && 'eq' == strtolower($value[0])) {
+            $data = $value[1];
+        }
+        if (isset($data)) {
+            return 'think:' . $options['table'] . '|' . $data;
+        } else {
+            return md5(serialize($options));
+        }
+    }
+
+    /**
      * 查找单条记录
-     * @access base
+     * @access public
      * @param array|string|Query|\Closure $data
      * @return array|false|\PDOStatement|string|Model
      * @throws DbException
@@ -2359,10 +2403,12 @@ class Query
         }
         // 分析查询表达式
         $options = $this->parseExpress();
-
+        $pk      = $this->getPk($options);
         if (!is_null($data)) {
             // AR模式分析主键条件
             $this->parsePkWhere($data, $options);
+        } elseif (!empty($options['cache']) && true === $options['cache']['key'] && is_string($pk) && isset($options['where']['AND'][$pk])) {
+            $key = $this->getCacheKey($options['where']['AND'][$pk], $options);
         }
 
         $options['limit'] = 1;
@@ -2372,12 +2418,14 @@ class Query
             $cache = $options['cache'];
             if (true === $cache['key'] && !is_null($data) && !is_array($data)) {
                 $key = 'think:' . (is_array($options['table']) ? key($options['table']) : $options['table']) . '|' . $data;
-            } else {
-                $key = is_string($cache['key']) ? $cache['key'] : md5(serialize($options));
+            } elseif (is_string($cache['key'])) {
+                $key = $cache['key'];
+            } elseif (!isset($key)) {
+                $key = md5(serialize($options));
             }
             $result = Cache::get($key);
         }
-        if (!$result) {
+        if (false === $result) {
             // 生成查询SQL
             $sql = $this->builder->select($options);
             // 获取参数绑定
@@ -2386,61 +2434,66 @@ class Query
                 // 获取实际执行的SQL语句
                 return $this->connection->getRealSql($sql, $bind);
             }
-
+            if (is_string($pk)) {
+                if (!is_array($data)) {
+                    if (isset($key) && strpos($key, '|')) {
+                        list($a, $val) = explode('|', $key);
+                        $item[$pk]     = $val;
+                    } else {
+                        $item[$pk] = $data;
+                    }
+                    $data = $item;
+                }
+            }
+            $options['data'] = $data;
             // 事件回调
             if ($result = $this->trigger('before_find', $options)) {
             } else {
                 // 执行查询
-                $result = $this->query($sql, $bind, $options['master'], $options['fetch_pdo']);
+                $resultSet = $this->query($sql, $bind, $options['master'], $options['fetch_pdo']);
 
-                if ($result instanceof \PDOStatement) {
+                if ($resultSet instanceof \PDOStatement) {
                     // 返回PDOStatement对象
-                    return $result;
+                    return $resultSet;
                 }
+                $result = isset($resultSet[0]) ? $resultSet[0] : null;
             }
 
-            if (isset($cache)) {
+            if (isset($cache) && $result) {
                 // 缓存数据
-                if (isset($cache['tag'])) {
-                    Cache::tag($cache['tag'])->set($key, $result, $cache['expire']);
-                } else {
-                    Cache::set($key, $result, $cache['expire']);
-                }
+                $this->cacheData($key, $result, $cache);
             }
         }
 
         // 数据处理
-        if (!empty($result[0])) {
-            $data = $result[0];
+        if (!empty($result)) {
             if (!empty($this->model)) {
                 // 返回模型对象
-                $model = $this->model;
-                $data  = new $model($data);
-                $data->isUpdate(true, isset($options['where']['AND']) ? $options['where']['AND'] : null);
+                $model  = $this->model;
+                $result = new $model($result);
+                $result->isUpdate(true, isset($options['where']['AND']) ? $options['where']['AND'] : null);
                 // 关联查询
                 if (!empty($options['relation'])) {
-                    $data->relationQuery($options['relation']);
+                    $result->relationQuery($options['relation']);
                 }
                 // 预载入查询
                 if (!empty($options['with'])) {
-                    $data->eagerlyResult($data, $options['with']);
+                    $result->eagerlyResult($result, $options['with']);
                 }
                 // 关联统计
                 if (!empty($options['with_count'])) {
-                    $data->relationCount($data, $options['with_count']);
+                    $result->relationCount($result, $options['with_count']);
                 }
             }
         } elseif (!empty($options['fail'])) {
             $this->throwNotFound($options);
-        } else {
-            $data = null;
         }
-        return $data;
+        return $result;
     }
 
     /**
      * 查询失败 抛出异常
-     * @access base
+     * @access public
      * @param array $options 查询参数
      * @throws ModelNotFoundException
      * @throws DataNotFoundException
@@ -2457,7 +2510,7 @@ class Query
 
     /**
      * 查找多条记录 如果不存在则抛出异常
-     * @access base
+     * @access public
      * @param array|string|Query|\Closure $data
      * @return array|\PDOStatement|string|Model
      * @throws DbException
@@ -2471,7 +2524,7 @@ class Query
 
     /**
      * 查找单条记录 如果不存在则抛出异常
-     * @access base
+     * @access public
      * @param array|string|Query|\Closure $data
      * @return array|\PDOStatement|string|Model
      * @throws DbException
@@ -2485,7 +2538,7 @@ class Query
 
     /**
      * 分批数据返回处理
-     * @access base
+     * @access public
      * @param integer  $count    每次处理的数据数量
      * @param callable $callback 处理回调方法
      * @param string   $column   分批处理的字段名
@@ -2532,7 +2585,7 @@ class Query
 
     /**
      * 获取绑定的参数 并清空
-     * @access base
+     * @access public
      * @return array
      */
     public function getBind()
@@ -2544,7 +2597,7 @@ class Query
 
     /**
      * 创建子查询SQL
-     * @access base
+     * @access public
      * @param bool $sub
      * @return string
      * @throws DbException
@@ -2556,7 +2609,7 @@ class Query
 
     /**
      * 删除记录
-     * @access base
+     * @access public
      * @param mixed $data 表达式 true 表示强制删除
      * @return int
      * @throws Exception
@@ -2566,8 +2619,9 @@ class Query
     {
         // 分析查询表达式
         $options = $this->parseExpress();
-        if (isset($options['cache']) && is_string($options['cache'])) {
-            $key = $options['cache'];
+        $pk      = $this->getPk($options);
+        if (isset($options['cache']) && is_string($options['cache']['key'])) {
+            $key = $options['cache']['key'];
         }
 
         if (!is_null($data) && true !== $data) {
@@ -2577,6 +2631,8 @@ class Query
             }
             // AR模式分析主键条件
             $this->parsePkWhere($data, $options);
+        } elseif (!isset($key) && is_string($pk) && isset($options['where']['AND'][$pk])) {
+            $key = $this->getCacheKey($options['where']['AND'][$pk], $options);
         }
 
         if (true !== $data && empty($options['where'])) {
@@ -2596,10 +2652,18 @@ class Query
         if (isset($key) && Cache::get($key)) {
             // 删除缓存
             Cache::rm($key);
+        } elseif (!empty($options['cache']['tag'])) {
+            Cache::clear($options['cache']['tag']);
         }
         // 执行操作
         $result = $this->execute($sql, $bind);
         if ($result) {
+            if (!is_array($data) && is_string($pk) && isset($key) && strpos($key, '|')) {
+                list($a, $val) = explode('|', $key);
+                $item[$pk]     = $val;
+                $data          = $item;
+            }
+            $options['data'] = $data;
             $this->trigger('after_delete', $options);
         }
         return $result;
@@ -2698,7 +2762,7 @@ class Query
 
     /**
      * 注册回调方法
-     * @access base
+     * @access public
      * @param string   $event    事件名
      * @param callable $callback 回调方法
      * @return void
@@ -2712,15 +2776,15 @@ class Query
      * 触发事件
      * @access protected
      * @param string $event   事件名
-     * @param mixed  $options 当前查询参数
+     * @param mixed  $params  额外参数
      * @return bool
      */
-    protected function trigger($event, $options = [])
+    protected function trigger($event, $params = [])
     {
         $result = false;
         if (isset(self::$event[$event])) {
             $callback = self::$event[$event];
-            $result   = call_user_func_array($callback, [$options, $this]);
+            $result   = call_user_func_array($callback, [$params, $this]);
         }
         return $result;
     }
