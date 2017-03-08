@@ -2,14 +2,12 @@
 <html>
 <head>
     <meta charset="UTF-8">
+
     {block name="title"}<title>{:config("WEB_TITLE")}</title>{/block}
-    {load href="../static/easyui/jquery.min.js" /}
     {load href="../static/easyui/themes/bootstrap/easyui.css" /}
-    {load href="../static/easyui/themes/icon.css" /}
-    {block name="extend_css"}{/block}
+    {load href="../static/easyui/jquery.min.js" /}
     {load href="../static/easyui/jquery.easyui.min.js" /}
     {load href="../static/easyui/locale/easyui-lang-zh_CN.js" /}
-    {block name="extend_js"}{/block}
 </head>
 <body>
 {block name="body"} {/block}

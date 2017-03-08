@@ -445,7 +445,7 @@ if(_66){
 clearTimeout(_66);
 }
 _66=setTimeout(function(){
-var _67=$("body.template");
+var _67=$("body.layout");
 if(_67.length){
 _67.layout("resize");
 $("body").children(".easyui-fluid:visible").each(function(){
@@ -542,7 +542,7 @@ if(!_75){
 return;
 }
 var _77=_75==$("body")[0];
-var s=$(_75).find("div.panel:visible,div.accordion:visible,div.tabs-container:visible,div.template:visible,.easyui-fluid:visible").filter(function(_78,el){
+var s=$(_75).find("div.panel:visible,div.accordion:visible,div.tabs-container:visible,div.layout:visible,.easyui-fluid:visible").filter(function(_78,el){
 var p=$(el).parents(".panel-"+_76+":first");
 return _77?p.length==0:p[0]==_75;
 });

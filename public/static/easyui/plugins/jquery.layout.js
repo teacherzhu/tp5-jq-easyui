@@ -84,7 +84,7 @@ cc.find(">div,>form>div").each(function(){
 _14(this);
 });
 _16.onAdd=_17;
-cc.append("<div class=\"template-split-proxy-h\"></div><div class=\"template-split-proxy-v\"></div>");
+cc.append("<div class=\"layout-split-proxy-h\"></div><div class=\"layout-split-proxy-v\"></div>");
 cc.bind("_resize",function(e,_18){
 if($(this).hasClass("easyui-fluid")||_18){
 _2(_13);
@@ -111,7 +111,7 @@ var _1f={north:"up",south:"down",east:"right",west:"left"};
 if(!_1f[dir]){
 return;
 }
-var _20="template-button-"+_1f[dir];
+var _20="layout-button-"+_1f[dir];
 var t=_1e.children("a."+_20);
 if(!t.length){
 t=$("<a href=\"javascript:;\"></a>").addClass(_20).appendTo(_1e);
@@ -121,20 +121,20 @@ return false;
 });
 }
 $(this).panel("options").collapsible?t.show():t.hide();
-}},_1b,{cls:((_1b.cls||"")+" template-panel template-panel-"+dir),bodyCls:((_1b.bodyCls||"")+" template-body")});
+}},_1b,{cls:((_1b.cls||"")+" layout-panel layout-panel-"+dir),bodyCls:((_1b.bodyCls||"")+" layout-body")});
 pp.panel(_1d);
 _1c[dir]=pp;
 var _21={north:"s",south:"n",east:"w",west:"e"};
 var _22=pp.panel("panel");
 if(pp.panel("options").split){
-_22.addClass("template-split-"+dir);
+_22.addClass("layout-split-"+dir);
 }
 _22.resizable($.extend({},{handles:(_21[dir]||""),disabled:(!pp.panel("options").split),onStartResize:function(e){
 _1=true;
 if(dir=="north"||dir=="south"){
-var _23=$(">div.template-split-proxy-v",_1a);
+var _23=$(">div.layout-split-proxy-v",_1a);
 }else{
-var _23=$(">div.template-split-proxy-h",_1a);
+var _23=$(">div.layout-split-proxy-h",_1a);
 }
 var top=0,_24=0,_25=0,_26=0;
 var pos={display:"block"};
@@ -166,22 +166,22 @@ pos.height=_22.outerHeight();
 }
 }
 _23.css(pos);
-$("<div class=\"template-mask\"></div>").css({left:0,top:0,width:cc.width(),height:cc.height()}).appendTo(cc);
+$("<div class=\"layout-mask\"></div>").css({left:0,top:0,width:cc.width(),height:cc.height()}).appendTo(cc);
 },onResize:function(e){
 if(dir=="north"||dir=="south"){
-var _27=$(">div.template-split-proxy-v",_1a);
+var _27=$(">div.layout-split-proxy-v",_1a);
 _27.css("top",e.pageY-$(_1a).offset().top-_27.height()/2);
 }else{
-var _27=$(">div.template-split-proxy-h",_1a);
+var _27=$(">div.layout-split-proxy-h",_1a);
 _27.css("left",e.pageX-$(_1a).offset().left-_27.width()/2);
 }
 return false;
 },onStopResize:function(e){
-cc.children("div.template-split-proxy-v,div.template-split-proxy-h").hide();
+cc.children("div.layout-split-proxy-v,div.layout-split-proxy-h").hide();
 pp.panel("resize",e.data);
 _2(_1a);
 _1=false;
-cc.find(">div.template-mask").remove();
+cc.find(">div.layout-mask").remove();
 }},_1b));
 cc.layout("options").onAdd.call(_1a,dir);
 };
@@ -252,9 +252,9 @@ $(_2e).layout("options").onCollapse.call(_2e,_2f);
 function _34(dir){
 var _38={"east":"left","west":"right","north":"down","south":"up"};
 var _39=(_32.region=="north"||_32.region=="south");
-var _3a="template-button-"+_38[dir];
+var _3a="layout-button-"+_38[dir];
 var p=$("<div></div>").appendTo(_2e);
-p.panel($.extend({},$.fn.layout.paneldefaults,{cls:("template-expand template-expand-"+dir),title:"&nbsp;",iconCls:(_32.hideCollapsedContent?null:_32.iconCls),closed:true,minWidth:0,minHeight:0,doSize:false,region:_32.region,collapsedSize:_32.collapsedSize,noheader:(!_39&&_32.hideExpandTool),tools:((_39&&_32.hideExpandTool)?null:[{iconCls:_3a,handler:function(){
+p.panel($.extend({},$.fn.layout.paneldefaults,{cls:("layout-expand layout-expand-"+dir),title:"&nbsp;",iconCls:(_32.hideCollapsedContent?null:_32.iconCls),closed:true,minWidth:0,minHeight:0,doSize:false,region:_32.region,collapsedSize:_32.collapsedSize,noheader:(!_39&&_32.hideExpandTool),tools:((_39&&_32.hideExpandTool)?null:[{iconCls:_3a,handler:function(){
 _41(_2e,_2f);
 return false;
 }}])}));
@@ -383,7 +383,7 @@ _2d(_4b,_51,0);
 function _52(_53,_54,_55){
 var p=$(_53).layout("panel",_54);
 p.panel("options").split=_55;
-var cls="template-split-"+_54;
+var cls="layout-split-"+_54;
 var _56=p.panel("panel").removeClass(cls);
 if(_55){
 _56.addClass(cls);
@@ -472,8 +472,8 @@ var cc=[];
 if(_6a.iconCls){
 cc.push("<div class=\"panel-icon "+_6a.iconCls+"\"></div>");
 }
-cc.push("<div class=\"panel-title template-expand-title");
-cc.push(_6a.iconCls?" template-expand-with-icon":"");
+cc.push("<div class=\"panel-title layout-expand-title");
+cc.push(_6a.iconCls?" layout-expand-with-icon":"");
 cc.push("\" style=\"left:"+_6c+"px\">");
 cc.push(_69);
 cc.push("</div>");

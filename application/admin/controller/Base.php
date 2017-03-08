@@ -27,15 +27,16 @@ class Base extends Controller
             return redirect(config('user_index'));
         }
         if ($request->isPost()) {
-            $param =$request->param();
-            $res = (new User())->login($param);
-
-            if(is_array($res)){
-                return json_encode($res);
-            }
-            else{
-                return $res;
-            }
+            return redirect(config('user_index'));
+//            $param =$request->param();
+//            $res = (new User())->login($param);
+//
+//            if(is_array($res)){
+//                return json_encode($res);
+//            }
+//            else{
+//                return $res;
+//            }
         } else {
             return $this->fetch();
         }
@@ -44,11 +45,12 @@ class Base extends Controller
 
     public function index()
     {
-        if (is_login()) {
-            return $this->fetch();
-        } else {
-            return redirect(config('user_login'));
-        }
+        return view('index');
+//        if (is_login()) {
+//            return $this->fetch();
+//        } else {
+//            return redirect(config('user_login'));
+//        }
     }
 
     public function get_menu()

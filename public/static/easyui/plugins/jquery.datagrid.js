@@ -950,7 +950,7 @@ var _f2=$.data(_f0,"datagrid");
 var _f3=_f2.options;
 var dc=_f2.dc;
 var _f4=dc.view.find("table.datagrid-btable,table.datagrid-ftable");
-_f4.css("table-template","fixed");
+_f4.css("table-layout","fixed");
 if(_f1){
 fix(_f1);
 }else{
@@ -959,7 +959,7 @@ for(var i=0;i<ff.length;i++){
 fix(ff[i]);
 }
 }
-_f4.css("table-template","");
+_f4.css("table-layout","");
 _f5(_f0);
 _34(_f0);
 _f6(_f0);

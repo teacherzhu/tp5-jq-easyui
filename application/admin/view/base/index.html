@@ -3,28 +3,9 @@
 {/block}
 {extend name="base/base"/}
 {block name="body"}
+
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'north',collapsible:false,border:false" style="height:80px;background-color:#6b9cde;">
-
-
-        <div class="top_right">
-            <ul>
-                <li><span class="iconCls icon-help" style="font-size:12px;"></span>
-                    <a href="#">帮助</a>
-                </li>
-                <li><span class="icon-more" style="font-size:12px;"></span>
-                    <a href="logout" class="topbar_menu">退出</a>
-                </li>
-            </ul>
-            <div class="top_user">
-            <span>
-                <font class="icon-account" style="color:#fff; padding-right:5px;"></font>
-                <a href="#">{$Think.session.user_info.username}</a>
-            </span>
-                <a href="#"><i>消息<b>0</b></i></a>
-
-            </div>
-        </div>
 
     </div>
     <div data-options="region:'west',collapsible:false,border:false" style="width:150px;">
