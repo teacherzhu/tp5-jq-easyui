@@ -8,9 +8,10 @@
 
 namespace app\admin\Controller;
 
+use app\builder\controller\indexBuilder;
 use think\Request;
 
-class user extends core
+class User extends core
 {
 
     /**
@@ -20,7 +21,16 @@ class user extends core
      */
     public function index()
     {
-        return view('index');
+//        return view('index');
+
+
+        $vi = new indexBuilder();
+
+        $this->assign('table',$vi->table);
+
+//        dump($vi->table);
+
+        return $this->fetch('./template/index_table.tpl');
     }
 
     /**
