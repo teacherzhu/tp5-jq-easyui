@@ -44,6 +44,8 @@ class Base extends Controller
 
     public function index()
     {
+//        dump($this);
+//
         if (is_login()) {
             $rule = new Rule();
             $menu = json_encode($rule->getRule());

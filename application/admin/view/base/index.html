@@ -1,6 +1,8 @@
+{block name="extend_js"}
+{load href="../static/admin/js/index.js" /}
+{/block}
 {extend name="base/base"/}
 {block name="body"}
-
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'north',collapsible:false,border:false" style="height:80px;background-color:#6b9cde;">
         <div style="height: 100%;width: 230px;text-align:center;float: right;">
@@ -25,13 +27,12 @@
                  style="padding:5px;"></div>
         </div>
     </div>
-    <div data-options="region:'south',collapsible:false,border:false" style="height:20px;text-align: center">
+    <div data-options="region:'south',collapsible:false,border:false" style="height:auto;text-align: center">
         <strong>Powered by li | Copyright © All rights reserved.</strong>
     </div>
 </div>
 {/block}
 {block name="body-js"}
-{load href="../static/admin/js/index.js" /}
 <script type="text/javascript">
     app.init();
 </script>

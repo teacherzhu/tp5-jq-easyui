@@ -19,7 +19,7 @@ class tableBuilder extends builder
             'list' => array()
         ),
         'columns' => array(),
-        'operate' => array(),
+        'options' => array(),
     );
 
     /**
@@ -50,7 +50,7 @@ class tableBuilder extends builder
             }
         }
         $this->table['id'] = $table['id'];
-        $this->table['operate'] = $this->setOptions($default_table);
+        $this->table['options'] = $this->setOptions($default_table);
 
         if (!empty($columns)) {
             foreach ($columns as $column) {
