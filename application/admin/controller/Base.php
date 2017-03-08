@@ -12,6 +12,7 @@ namespace app\admin\Controller;
 use app\admin\model\Rule;
 use app\admin\model\User;
 use think\Controller;
+use think\Log;
 use think\Request;
 
 class Base extends Controller
@@ -27,16 +28,14 @@ class Base extends Controller
             return redirect(config('user_index'));
         }
         if ($request->isPost()) {
-            return redirect(config('user_index'));
-//            $param =$request->param();
-//            $res = (new User())->login($param);
-//
-//            if(is_array($res)){
-//                return json_encode($res);
-//            }
-//            else{
-//                return $res;
-//            }
+
+            $res = (new User())->login($request->param());
+
+            if (is_array($res)) {
+                return json_encode($res);
+            } else {
+                return $res;
+            }
         } else {
             return $this->fetch();
         }
@@ -45,21 +44,12 @@ class Base extends Controller
 
     public function index()
     {
-        return view('index');
-//        if (is_login()) {
-//            return $this->fetch();
-//        } else {
-//            return redirect(config('user_login'));
-//        }
-    }
-
-    public function get_menu()
-    {
         if (is_login()) {
             $rule = new Rule();
-            return $rule->getRule();
+            $menu = json_encode($rule->getRule());
+            $this->assign('_menu',$menu);
+            return $this->fetch();
         } else {
-            $this->logout();
             return redirect(config('user_login'));
         }
     }
@@ -67,7 +57,8 @@ class Base extends Controller
     /* 退出登录 */
     public function logout()
     {
-        return (new User())->logout();
+        (new User())->logout();
+        return redirect(config('user_login'));
     }
 
 

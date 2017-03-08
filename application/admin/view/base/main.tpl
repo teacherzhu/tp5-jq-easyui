@@ -1,11 +1,4 @@
-{block name="title"}<title>{:config("WEB_TITLE")}</title>{/block}
-{load href="./static/easyui/jquery.min.js" /}
-{load href="./static/easyui/themes/bootstrap/easyui.css" /}
-{load href="./static/easyui/themes/icon.css" /}
-{load href="./static/easyui/jquery.easyui.min.js" /}
-{load href="./static/easyui/locale/easyui-lang-zh_CN.js" /}
 {block name="body"}
-
     <!-- 搜索框 -->
     {present name="search"}
         <div id="search_dialog">
@@ -19,18 +12,17 @@
                 {/volist}
             </form>
         </div>
-
     {/present}
 
     {present name="table"}
         <!-- 工具栏按钮 -->
-        {present name="table.tool_bar"}
-            <div id="{$table.tool_bar.id}">
-                {volist name="table.tool_bar.list" id="list"}
-                    {*<a href="{$button.href}" class="{$button.class}" data-options="{$button.options}" onclick="{$button.click}"></a>*}
-                {/volist}
-            </div>
-        {/present}
+    {present name="table.tool_bar"}
+        <div id="{$table.tool_bar.id}">
+            {volist name="table.tool_bar.list" id="list"}
+                {*<a href="{$button.href}" class="{$button.class}" data-options="{$button.options}" onclick="{$button.click}"></a>*}
+            {/volist}
+        </div>
+    {/present}
         <table id="{$table.id}" class="easyui-datagrid">
             <thead>
             <tr>
@@ -47,10 +39,5 @@
         function edit_fuc(id) {
             alert(id);
         }
-        $('#grid').datagrid({
-            url:'test'
-        });
-
-
     </script>
 {/block}

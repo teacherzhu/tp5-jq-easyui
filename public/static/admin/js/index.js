@@ -4,12 +4,6 @@
         init: function () {
             window.app.SLog('------------------init    start-----------------------');
             $('#menu').tree({
-                url: './base/get_menu',
-                method: 'post',
-                animate: true,
-                lines: true,
-                onLoadSuccess: function (data) {
-                },
                 onClick: function (node) {
                     // window.app.SLog(node.target,$('#menu').tree('isLeaf', node.target));
                     if ($('#menu').tree('isLeaf', node.target)) {//判断是否是叶子节点
@@ -56,6 +50,17 @@
             });
             window.app.SLog('------------------init    end-----------------------');
         },
+        success: function (data) {
+            try {
+
+                var dataJSON = JSON.parse(data);
+
+                $.messager.show({title: '成功', msg: dataJSON.Msg, timeout: 1000, showType: 'slide'});
+
+            } catch (e) {
+                $.messager.alert('错 误', '数据格式错误！', 'error');
+            }
+        },
         error: function (data) {
             try {
                 var dataJSON = JSON.parse(data);
@@ -97,7 +102,7 @@
                 height: height,
                 singleSelect: singleSelect,                  //单选选项
                 fit: true,
-                fitColumns:true,
+                fitColumns: true,
                 striped: true,
                 border: false,
                 pagination: pagination,
@@ -181,7 +186,6 @@
                     $.messager.show({title: '错误提示', msg: res.info, timeout: 2000, showType: 'slide'});
                 } else {
                     $.messager.show({title: '成功提示', msg: res.info, timeout: 1000, showType: 'slide'});
-                    updateTabs(Model_name, res.url + '&cachedata=' + new Date().getTime(), '', 'iconfont icon-viewlist');
                 }
             })
         },
@@ -213,17 +217,6 @@
             else {
                 $('#' + Data_Box).datagrid('reload');
             }
-        },
-
-        /**
-         * 初始化一个对话框
-         */
-        initDialog: function (object) {
-        },
-
-        dialogShow: function (id) {
-        },
-        dialogClose: function (id) {
         }
     };
     return window.app = window.app || app;

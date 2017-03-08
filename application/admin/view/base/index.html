@@ -1,15 +1,23 @@
-{block name="extend_css"}
-{load href="../static/admin/css/index.css" /}
-{/block}
 {extend name="base/base"/}
 {block name="body"}
 
 <div class="easyui-layout" data-options="fit:true">
     <div data-options="region:'north',collapsible:false,border:false" style="height:80px;background-color:#6b9cde;">
+        <div style="height: 100%;width: 230px;text-align:center;float: right;">
+            <div style="height: 40px;width: 100px;text-align:center;float: left;padding:20px 0">
+                <a href="user/info" class="easyui-linkbutton" data-options="size:'large',iconCls:'icon-man',plain:true">{$Think.session.user_info.username}</a>
+            </div>
+            <div style="width: 100px;height: 40px;text-align:center;float: left;padding:15px 0">
+                <a href="http://www.baidu.com" class="easyui-linkbutton"
+                   data-options="text:'帮助',iconCls:'icon-help',plain:true"></a>
+                <a href="logout" class="easyui-linkbutton" data-options="text:'退出',iconCls:'icon-back',plain:true"></a>
+            </div>
+        </div>
 
     </div>
-    <div data-options="region:'west',collapsible:false,border:false" style="width:150px;">
-        <ul id="menu" style="margin-top: 10px"></ul>
+    <div data-options="region:'west',collapsible:false,border:false" style="width:155px;">
+        <ul id="menu" class="easyui-tree" data-options='data:{$_menu},animate:true, lines:true'
+            style="margin-top: 10px"></ul>
     </div>
     <div data-options="region:'center',collapsible:false,border:false" style="padding:2px;background:#eee;">
         <div id="mainTabs" class="easyui-tabs" data-options="fit:true,border:false">
