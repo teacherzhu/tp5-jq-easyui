@@ -9,18 +9,14 @@ namespace app\builder\controller;
  */
 class builder
 {
-    protected $extra_css = '';
-    protected $extra_js = '';
-    protected $_template; // 模板路径
     protected $button = array();
-    protected $treeColumn = array();
 
     /**
      * @param string $type
      * @param array $attribute
      * @return $this
      */
-    protected function addButton($type = 'self', $attribute = array())
+    public function addButton($type = 'self', $attribute = array())
     {
         $default_class = 'easyui-linkbutton';
         $default_href = '#';
@@ -62,27 +58,27 @@ class builder
             case 'create': // 添加新增按钮
                 $default_button['text'] = '新增';
                 $default_button['iconCls'] = 'icon-add';
-                $temp['click'] = '';
+                $temp['click'] = "window.app.gridCreate()";
                 break;
             case 'edit': // 添加编辑按钮
                 $default_button['text'] = '编辑';
                 $default_button['iconCls'] = 'icon-edit';
-                $temp['click'] = "edit_fuc(\\''+row.id+'\\')";
+                $temp['click'] = "window.app.gridEdit(\\''+row.id+'\\')";
                 break;
             case 'delete': // 添加删除按钮
                 $default_button['text'] = '删除';
                 $default_button['iconCls'] = 'icon-clear';
-                $temp['click'] = '';
+                $temp['click'] = "window.app.gridRemove(\\''+row.id+'\\')";
                 break;
             case 'search': // 添加查询按钮
                 $default_button['text'] = '搜索';
                 $default_button['iconCls'] = 'icon-search';
-                $temp['click'] = '';
+                $temp['click'] = "window.app.gridSearch()";
                 break;
             case 'refresh': // 添加查询按钮
                 $default_button['text'] = '刷新';
                 $default_button['iconCls'] = 'icon-reload';
-                $temp['click'] = '';
+                $temp['click'] = "window.app.gridReload()";
                 break;
             default:
                 break;
@@ -103,10 +99,18 @@ class builder
         $str_options = '';
         if (is_array($options)) {
             foreach ($options as $k => $option) {
-                if ('formatter' == $k) {
+
+                if(is_bool($option)){
+                    if($option){
+                        $str_options .= $k . ":true,";
+                    }
+                    else{
+                        $str_options .= $k . ":false,";
+                    }
+                }
+                else if ('formatter' == $k) {
                     $str_options .= $k . ":" . $option . ",";
                 } else {
-
                     $str_options .= $k . ":'" . $option . "',";
                 }
             }

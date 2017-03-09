@@ -11,9 +11,11 @@ namespace app\builder\controller;
 
 class tableBuilder extends builder
 {
+    private $tableID = '';
+    private $toolID = '';
     private $table = array(
         'id' => '',
-        'class' =>'easyui-datagrid',
+        'class' => 'easyui-datagrid',
         'tool_bar' => array(
             'id' => '',
             'list' => array()
@@ -30,18 +32,20 @@ class tableBuilder extends builder
      */
     public function addTable($table, $columns = array(), $tool_bar = array(), $type = 'self')
     {
+
         $default_table = array(
             'url' => '',
-            'toolbar' => isset($tool_bar['id']) ? $tool_bar['id'] : '',
+            'toolbar' => '',
             'method' => 'post',
+            'border' => false,
+            'singleSelect' => true,
+            'pagination' => false,
+            'rownumbers' => true,
+            'fit' => true,
             'fitColumns' => true,
             'autoRowHeight' => false,
-            'selectOnCheck' => false,
-            'checkOnSelect' => false,
-            'pagePosition' => false,
-            'pageNumber' => 1,
-            'pageSize' => 10,
-            'pageList' => '[10,20,30,40,50]'
+            'emptyMsg' => '表格结果为空'
+
         );
         if ($default_table && is_array($table)) {
             $default_table = array_merge($default_table, $table);
@@ -50,16 +54,27 @@ class tableBuilder extends builder
             }
         }
         $this->table['id'] = $table['id'];
+        $this->tableID = $table['id'];
+        if (!empty($tool_bar)) {
+            $this->toolID = $tool_bar['id'];
+            $default_table['toolbar'] = "#" . $this->toolID;
+            $this->table['tool_bar']['list'] = $tool_bar['list'];
+        }
+
+
         $this->table['options'] = $this->setOptions($default_table);
 
         if (!empty($columns)) {
             foreach ($columns as $column) {
-                $this->addTableColumn($column['column'], $column['type']);
+                if (isset($column['type'])) {
+                    $this->addTableColumn($column['column'], $column['type']);
+                } else {
+                    $this->addTableColumn($column['column']);
+                }
+
             }
         }
-        if (!empty($tool_bar)) {
-            $this->table['tool_bar']['list'] = $tool_bar['list'];
-        }
+
     }
 
     public function getTable()
@@ -79,13 +94,12 @@ class tableBuilder extends builder
         $default_column = array(
             'title' => '',
             'field' => '',
-            'width' => '60',
+            'width' => '100',
             'align' => 'center',
             'halign' => 'center',
             'sortable' => false,
             'order' => 'desc',
             'resizable' => false,
-            'fixed' => true,
             'hidden' => false,
             'checkbox' => false
         );
@@ -102,26 +116,23 @@ class tableBuilder extends builder
                 break;
             case 'operate': // 添加新增按钮
                 $default_column['title'] = '操作';
-                unset($default_column['formatter']);
                 unset($default_column['style']);
                 unset($default_column['checkbox']);
                 unset($default_column['resizable']);
                 unset($default_column['order']);
                 unset($default_column['sortable']);
                 unset($default_column['halign']);
-                unset($default_column['fixed']);
                 unset($default_column['hidden']);
-                $default_column['width'] = count($column['button']) * 60;
+                $default_column['width'] = '' . count($column['button']) * 100;
                 $html = '';
                 $default_column['formatter'] = 'function(value,row,index){';
                 foreach ($column['button'] as $k => $button) {
                     $options = preg_replace('/\'/', "", $button['options']);
                     $options = str2arr($options);
                     $options = substr($options[0], 5);
-                    $html .= "<a href=" . $button['href'] . " class=" . $button['class'] . " onclick=" . $button['click'] . ">" . $options . "</a>&nbsp&nbsp&nbsp&nbsp";
+                    $html .= "<a href=" . $button['href'] . " grid=".$this->tableID." gridType=table class=" . $button['class'] . " onclick=" . $button['click'] . ">" . $options . "</a>&nbsp&nbsp";
                 }
-                $default_column['formatter'] .= "return '<div>" . $html . "</div>';}";
-
+                $default_column['formatter'] .= "return '<div class=\'operate\'>" . $html . "</div>';}";
                 break;
             default:
                 break;

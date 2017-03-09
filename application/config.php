@@ -230,13 +230,6 @@ return [
         // 是否使用 setcookie
         'setcookie' => true,
     ],
-
-    //分页配置
-    'paginate' => [
-        'type' => 'bootstrap',
-        'var_page' => 'page',
-        'list_rows' => 15,
-    ],
     'WEB_TITLE' =>'GMS 后台管理系统',
     'auth_key' => 'uid',
     'administrator' => array('1'),

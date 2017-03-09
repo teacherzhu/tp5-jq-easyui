@@ -189,23 +189,35 @@
                 }
             })
         },
+        gridEdit: function (id) {
+            if (id) {
 
-        gridRemove: function (Data_from_url, Datagrid_data, type) {
+
+            }
+            else {
+                $.messager.alert('错 误', '参数错误！', 'error');
+            }
+        },
+
+        gridRemove: function (id) {
+            console.log($(this));
             $.messager.confirm('确定操作', '您正在要删除所选的记录吗？', function (flag) {
                 if (flag) {
-                    $.post(Data_from_url, {}, function (res) {
-                        if (!res.status) {
-                            $.messager.show({title: '错误提示', msg: res.info, timeout: 2000, showType: 'slide'});
-                        } else {
-                            if ('tree' == type) {
-                                $('#' + Datagrid_data).treegrid('reload');
-                            }
-                            else {
-                                $('#' + Datagrid_data).datagrid('reload');
-                            }
-                            $.messager.show({title: '成功提示', msg: res.info, timeout: 1000, showType: 'slide'});
-                        }
-                    })
+
+                    $.messager.alert('错 误', this, 'error');
+                    // $.post(Data_from_url, {}, function (res) {
+                    //     if (!res.status) {
+                    //         $.messager.show({title: '错误提示', msg: res.info, timeout: 2000, showType: 'slide'});
+                    //     } else {
+                    //         if ('tree' == type) {
+                    //             $('#' + Datagrid_data).treegrid('reload');
+                    //         }
+                    //         else {
+                    //             $('#' + Datagrid_data).datagrid('reload');
+                    //         }
+                    //         $.messager.show({title: '成功提示', msg: res.info, timeout: 1000, showType: 'slide'});
+                    //     }
+                    // })
                 }
             })
         },
