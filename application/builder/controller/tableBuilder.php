@@ -9,6 +9,8 @@
 namespace app\builder\controller;
 
 
+use think\Request;
+
 class tableBuilder extends builder
 {
     private $tableID = '';
@@ -18,11 +20,14 @@ class tableBuilder extends builder
         'class' => 'easyui-datagrid',
         'tool_bar' => array(
             'id' => '',
+            'gridType' => '',
+            'controller' => '',
             'list' => array()
         ),
         'columns' => array(),
         'options' => array(),
     );
+    private $request;
 
     /**
      * @param array $table
@@ -30,9 +35,9 @@ class tableBuilder extends builder
      * @param array $columns array('columns'=>array(),type='self')
      * @param array $tool_bar
      */
-    public function addTable($table, $columns = array(), $tool_bar = array(), $type = 'self')
+    public function addTable($table, $columns = array(), $tool_bar = array())
     {
-
+        $this->request = Request::instance();
         $default_table = array(
             'url' => '',
             'toolbar' => '',
@@ -56,8 +61,10 @@ class tableBuilder extends builder
         $this->table['id'] = $table['id'];
         $this->tableID = $table['id'];
         if (!empty($tool_bar)) {
-            $this->toolID = $tool_bar['id'];
-            $default_table['toolbar'] = "#" . $this->toolID;
+            $this->table['tool_bar']['id'] = $tool_bar['id'];
+            $this->table['tool_bar']['gridType'] = 'table';
+            $this->table['tool_bar']['controller'] = $this->request->controller();
+            $default_table['toolbar'] = "#" . $tool_bar['id'];
             $this->table['tool_bar']['list'] = $tool_bar['list'];
         }
 
@@ -130,7 +137,7 @@ class tableBuilder extends builder
                     $options = preg_replace('/\'/', "", $button['options']);
                     $options = str2arr($options);
                     $options = substr($options[0], 5);
-                    $html .= "<a href=" . $button['href'] . " grid=".$this->tableID." gridType=table class=" . $button['class'] . " onclick=" . $button['click'] . ">" . $options . "</a>&nbsp&nbsp";
+                    $html .= "<a href=" . $button['href'] . " controller=" . $this->request->controller() . " grid=" . $this->tableID . " gridType=table class=" . $button['class'] . " onclick=" . $button['click'] . ">" . $options . "</a>&nbsp&nbsp";
                 }
                 $default_column['formatter'] .= "return '<div class=\'operate\'>" . $html . "</div>';}";
                 break;

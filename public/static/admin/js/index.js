@@ -55,7 +55,7 @@
 
                 var dataJSON = JSON.parse(data);
 
-                $.messager.show({title: '成功', msg: dataJSON.Msg, timeout: 1000, showType: 'slide'});
+                $.messager.show({title: '成功', msg: dataJSON.Msg, timeout: 2000, showType: 'slide'});
 
             } catch (e) {
                 $.messager.alert('错 误', '数据格式错误！', 'error');
@@ -189,6 +189,19 @@
                 }
             })
         },
+        getAttributes: function (event) {
+            var info = {};
+            if (event) {
+
+                info.controller = event.target.attributes.controller.value;
+                info.gridID = event.target.attributes.grid.value;
+                info.gridType = event.target.attributes.gridType.value;
+                return info;
+            }
+            else {
+                window.app.error();
+            }
+        },
         gridEdit: function (id) {
             if (id) {
 
@@ -200,29 +213,32 @@
         },
 
         gridRemove: function (id) {
-            console.log($(this));
+            var info = window.app.getAttributes(event);
             $.messager.confirm('确定操作', '您正在要删除所选的记录吗？', function (flag) {
                 if (flag) {
-
-                    $.messager.alert('错 误', this, 'error');
-                    // $.post(Data_from_url, {}, function (res) {
-                    //     if (!res.status) {
-                    //         $.messager.show({title: '错误提示', msg: res.info, timeout: 2000, showType: 'slide'});
-                    //     } else {
-                    //         if ('tree' == type) {
-                    //             $('#' + Datagrid_data).treegrid('reload');
-                    //         }
-                    //         else {
-                    //             $('#' + Datagrid_data).datagrid('reload');
-                    //         }
-                    //         $.messager.show({title: '成功提示', msg: res.info, timeout: 1000, showType: 'slide'});
-                    //     }
-                    // })
+                    if (info) {
+                        $.post(info.controller + '/delete', {'id': id}, function (res) {
+                            if (200 == res.code) {
+                                window.app.Reload(info.gridID, info.gridType);
+                                window.app.success(res);
+                            } else {
+                                window.app.error(res);
+                            }
+                        });
+                    }
+                    else {
+                        window.app.error();
+                    }
                 }
             })
         },
         /* 刷新页面 */
-        gridReload: function (Data_Box, type) {
+        gridReload: function () {
+            window.app.SLog(event);
+            var info = window.app.getAttributes(event);
+        },
+        /* 刷新页面 */
+        Reload: function (Data_Box, type) {
             if ('tree' == type) {
                 $('#' + Data_Box).treegrid('reload');
             }
