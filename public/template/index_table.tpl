@@ -35,7 +35,3 @@
     </table>
 {/notempty}
 {/present}
-<script type="text/javascript">
-    var editURL = '';
-    var removeURL='';
-</script>

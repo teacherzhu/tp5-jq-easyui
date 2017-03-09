@@ -22,34 +22,26 @@ class Base extends Controller
      */
     public function login()
     {
-
         $request = Request::instance();
         if (is_login()) {
             return redirect(config('user_index'));
         }
         if ($request->isPost()) {
 
-            $res = (new User())->login($request->param());
+            $res = (new User())->login($request);
+            return json_encode($res);
 
-            if (is_array($res)) {
-                return json_encode($res);
-            } else {
-                return $res;
-            }
         } else {
             return $this->fetch();
         }
-
     }
 
     public function index()
     {
-//        dump($this);
-//
         if (is_login()) {
             $rule = new Rule();
             $menu = json_encode($rule->getRule());
-            $this->assign('_menu',$menu);
+            $this->assign('_menu', $menu);
             return $this->fetch();
         } else {
             return redirect(config('user_login'));

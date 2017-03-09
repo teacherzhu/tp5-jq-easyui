@@ -192,58 +192,69 @@
         getAttributes: function (event) {
             var info = {};
             if (event) {
-
-                info.controller = event.target.attributes.controller.value;
-                info.gridID = event.target.attributes.grid.value;
-                info.gridType = event.target.attributes.gridType.value;
+                info.controller = $(event).attr('controller');
+                info.gridID = $(event).attr('grid');
                 return info;
             }
             else {
                 window.app.error();
             }
         },
-        gridEdit: function (id) {
-            if (id) {
-
-
+        gridCreate: function () {
+            if ($(event.target).parent().parent().is('a')) {
+                var info = window.app.getAttributes($(event.target).parent().parent());
+                window.app.SLog(info);
             }
-            else {
-                $.messager.alert('错 误', '参数错误！', 'error');
+        },
+        gridEdit: function (id) {
+            if ($(event.target).is('a')) {
+                var info = window.app.getAttributes(event.target);
+                if (id) {
+                    window.app.SLog(info,id);
+
+                }
+                else {
+                    $.messager.alert('错 误', '参数错误！', 'error');
+                }
             }
         },
 
         gridRemove: function (id) {
-            var info = window.app.getAttributes(event);
-            $.messager.confirm('确定操作', '您正在要删除所选的记录吗？', function (flag) {
-                if (flag) {
-                    if (info) {
-                        $.post(info.controller + '/delete', {'id': id}, function (res) {
-                            if (200 == res.code) {
-                                window.app.Reload(info.gridID, info.gridType);
-                                window.app.success(res);
-                            } else {
-                                window.app.error(res);
-                            }
-                        });
+            if ($(event.target).is('a')) {
+                var info = window.app.getAttributes(event.target);
+                $.messager.confirm('确定操作', '您正在要删除所选的记录吗？', function (flag) {
+                    if (flag) {
+                        if (info) {
+                            $.post(info.controller + '/delete', {'id': id}, function (res) {
+                                if (200 == res.code) {
+                                    window.app.Reload(info.gridID);
+                                    window.app.success(res);
+                                } else {
+                                    window.app.error(res);
+                                }
+                            });
+                        }
+                        else {
+                            window.app.error();
+                        }
                     }
-                    else {
-                        window.app.error();
-                    }
-                }
-            })
+                })
+            }
         },
         /* 刷新页面 */
         gridReload: function () {
-            window.app.SLog(event);
-            var info = window.app.getAttributes(event);
+            if ($(event.target).parent().parent().is('a')) {
+                var info = window.app.getAttributes($(event.target).parent().parent());
+                window.app.Reload(info.gridID);
+            }
         },
         /* 刷新页面 */
-        Reload: function (Data_Box, type) {
-            if ('tree' == type) {
-                $('#' + Data_Box).treegrid('reload');
+        Reload: function (gridID) {
+            if ($('#' + gridID).hasClass('easyui-treegrid')) {
+                $('#' + gridID).treegrid('reload');
             }
             else {
-                $('#' + Data_Box).datagrid('reload');
+                $('#' + gridID).datagrid('reload');
             }
         }
     };
