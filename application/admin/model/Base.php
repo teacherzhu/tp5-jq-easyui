@@ -58,7 +58,26 @@ class Base extends Model
     public function getDataList($request)
     {
         $Utils = new groupUtil();
-        dump($request->param());
+        $groupId = get_group_id();
+        $groupIds = $Utils->getAllChildID($groupId);
+        $map = $this->search();
+        if ('Group' == $request->controller()) {
+
+        } else {
+            $page = $request->has('page', 'post') ? $request->param('page') : 1;
+            $rows = $request->has('rows', 'post') ? $request->param('rows') : 10;
+            $first = $rows * ($page - 1);
+            $data['total'] = $this->where($map)->where('group_id', 'in', $groupIds)->count();
+            if (0 == $data['total']) {
+                $data['data'] = array();
+            } else {
+                $data['data'] = $this->where($map)->where('group_id', 'in', $groupIds)
+                    ->limit($first . ',' . $rows)->select();
+            }
+            $data = $this->formatDataContent($data);
+            $data = $this->formatDataStructure($data);
+            return $data;
+        }
     }
 
     public function createData($request)
@@ -73,6 +92,21 @@ class Base extends Model
      */
     public function editData($request)
     {
+
+        if ($request->isGet()) {
+
+            $Utils = new GroupInfoUtils();
+            //获取检索条件
+            $id = I('get.ID');
+
+            $data = $this->where(array('id' => $id,))->find(); //查找语句
+
+            if ($data) {
+                return returnSuccess('查询成功', $data);
+            } else {
+                return returnError($this->getError());
+            }
+        }
     }
 
     /**

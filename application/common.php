@@ -76,40 +76,6 @@ function list_to_tree($list, $pk = 'id', $pid = 'pid', $child = '_child', $root 
 }
 
 /**
- * @param $list
- * @param string $pk
- * @param string $pid
- * @param string $child
- * @param int $root
- * @return array
- */
-function list_to_tree2($list, $pk = 'id', $pid = 'pid', $child = '_child', $root = 0)
-{
-    // 创建Tree
-    $tree = array();
-    if (is_array($list)) {
-        // 创建基于主键的数组引用
-        $refer = array();
-        foreach ($list as $key => $data) {
-            $refer[$data[$pk]] =& $list[$key];
-        }
-        foreach ($list as $key => $data) {
-            // 判断是否存在parent
-            $parentId = $data[$pid];
-            if ($root == $parentId) {
-                $tree[$data['id']] =& $list[$key];
-            } else {
-                if (isset($refer[$parentId])) {
-                    $parent =& $refer[$parentId];
-                    $parent[$child][$data['id']] =& $list[$key];
-                }
-            }
-        }
-    }
-    return $tree;
-}
-
-/**
  * 字符串转换为数组，主要用于把分隔符调整到第二个参数
  * @param  string $str 要分割的字符串
  * @param  string $glue 分割符
@@ -189,31 +155,11 @@ function tree_to_list($tree, $child = '_child', $order = 'id', &$list = array())
     return $list;
 }
 
-function client_ip()
-{
-    $request = request();
-    return $request->ip();
-}
-
 /**
- * 时间戳格式化
- * @param int $time
- * @param string $format 格式化样式 默认'Y-m-d H:i'
- * @return string 完整的时间显示
+ * 获取当前登录用户的组织ID
  */
-function time_format($time = NULL, $format = 'Y-m-d H:i')
-{
-    $time = $time === NULL ? NOW_TIME : intval($time);
-    return date($format, $time);
-}
-
-function get_param()
-{
-    if (IS_POST) {
-        return input('post.');
-    } else {
-        return input('get.');
-    }
+function get_group_id(){
+    return session('user_info')['group_id'];
 }
 
 function message($code, $msg = '', $data = array())
