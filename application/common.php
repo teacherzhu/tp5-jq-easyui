@@ -158,11 +158,33 @@ function tree_to_list($tree, $child = '_child', $order = 'id', &$list = array())
 /**
  * 获取当前登录用户的组织ID
  */
-function get_group_id(){
+function get_group_id()
+{
     return session('user_info')['group_id'];
+}
+/**
+ * 获取当前登录用户的用户组ID
+ */
+function get_role_id()
+{
+    return session('user_info')['role_id'];
+}
+
+function get_status($status)
+{
+    $s = array(
+        0 => '禁用',
+        1 => '启用'
+    );
+    return $s[$status];
 }
 
 function message($code, $msg = '', $data = array())
 {
     return ['Code' => $code, 'Msg' => $msg, 'Data' => $data];
+}
+
+function formatRow($total, $data)
+{
+    return ['total' => $total, 'rows' => $data];
 }

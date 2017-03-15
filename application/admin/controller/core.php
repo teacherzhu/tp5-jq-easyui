@@ -51,7 +51,7 @@ class core extends Controller
     public function dataList(Request $request)
     {
         $res = $this->Model->getDataList($request);
-        return json_encode($res);
+        return$res;
     }
 
     /**

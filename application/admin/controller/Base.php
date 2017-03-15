@@ -43,6 +43,8 @@ class Base extends Controller
             $menu = json_encode($rule->getRule());
             $this->assign('_menu', $menu);
             return $this->fetch();
+
+
         } else {
             return redirect(config('user_login'));
         }

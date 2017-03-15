@@ -10,10 +10,36 @@ namespace app\admin\model;
 
 use think\Model;
 
-class Role extends model
+class Role extends Base
 {
+    protected $table = "gms_role";
+    protected $autoWriteTimestamp = 'datetime';
 
-    public function getRules($uid=0){
+    public function getRoleName($id)
+    {
+        if ($id)
+            return $this->where(['id' => $id])->cache(true,60)->value('name');
     }
+
+    public function getRules($id)
+    {
+        if ($id)
+            return $this->where(['id' => $id])->value('rules');
+    }
+
+    protected function formatDataContent($data)
+    {
+        foreach ($data['data'] as $k => $item) {
+            $data['data'][$k]['status'] = get_status($item['status']);
+        }
+        return $data;
+    }
+
+
+    protected function formatDataStructure($data)
+    {
+        return formatRow($data['total'], $data['data']);
+    }
+
 
 }

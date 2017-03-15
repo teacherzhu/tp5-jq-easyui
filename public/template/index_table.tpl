@@ -17,13 +17,15 @@
 {present name="table"}
 {notempty name="table"}
 
-    {notempty name="table.tool_bar"}
-        <div id="{$table.tool_bar.id}">
-            {foreach $table.tool_bar.list as $tool}
-                <a href="#" controller="{$table.tool_bar.controller}" grid="{$table.id}" gridType="{$table.tool_bar.gridType}" class="{$tool.class}" onclick="{$tool.click}" data-options="{$tool.options}"></a>
-            {/foreach}
-        </div>
-    {/notempty}
+{notempty name="table.tool_bar"}
+    <div id="{$table.tool_bar.id}">
+        {foreach $table.tool_bar.list as $tool}
+            <a href="#" controller="{$table.tool_bar.controller}" grid="{$table.id}"
+               gridType="{$table.tool_bar.gridType}" class="{$tool.class}" onclick="{$tool.click}"
+               data-options="{$tool.options}"></a>
+        {/foreach}
+    </div>
+{/notempty}
     <table id="{$table.id}" class="{$table.class}" data-options="{$table.options}">
         <thead>
         <tr>
