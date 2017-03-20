@@ -23,25 +23,6 @@ class core extends Controller
     }
 
 
-    /**
-     * 显示资源表单页.
-     *
-     * @return \think\Response
-     */
-    protected function resourcesView()
-    {
-        return view('resource');
-    }
-
-    /**
-     * 显示搜索表单页.
-     *
-     * @return \think\Response
-     */
-    protected function searchView()
-    {
-        return view('search');
-    }
 
     /**
      * 获取数据
@@ -51,7 +32,7 @@ class core extends Controller
     public function dataList(Request $request)
     {
         $res = $this->Model->getDataList($request);
-        return$res;
+        return $res;
     }
 
     /**

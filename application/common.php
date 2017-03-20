@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+use app\admin\utils\Auth;
 
 /**
  * 检测用户是否登录
@@ -30,13 +31,35 @@ function is_login()
  * @param int $uid 传入uid
  * @return boolean true-管理员，false-非管理员
  */
-function is_administrator($uid)
+function is_admin($uid)
 {
     $uid = is_null($uid) ? is_login() : $uid;
     if (in_array($uid, config('administrator'))) {
         return true;
     } else {
         return false;
+    }
+}
+
+/**
+ * 权限认证
+ * @param $authName
+ * @return bool
+ */
+function is_auth($authName)
+{
+    $Auth = new Auth();
+    $authKey = is_login();
+    Think\Log::record('$authName-------------->' . $authName);
+    //判断当前认证key是否不在 超级管理组配置中
+    if (!is_admin($authKey)) {
+        if (!$Auth->check($authName, $authKey)) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return true;
     }
 }
 
@@ -162,6 +185,7 @@ function get_group_id()
 {
     return session('user_info')['group_id'];
 }
+
 /**
  * 获取当前登录用户的用户组ID
  */

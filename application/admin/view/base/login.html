@@ -6,7 +6,8 @@
 <div class="bg"></div>
 <div class="login_box">
     <div class="login_title">
-        <div class="logo">{:config('WEB_TITLE')}</div>
+        <!--<div class="logo">{:config('WEB_TITLE')}</div>-->
+        <div class="logo">{:cache('DB_CONFIG_DATA')['WEB_SITE_TITLE']}</div>
     </div>
     <form id="login_form" method="post">
         <div class="form">

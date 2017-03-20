@@ -16,7 +16,6 @@
 {/present}
 {present name="table"}
 {notempty name="table"}
-
 {notempty name="table.tool_bar"}
     <div id="{$table.tool_bar.id}">
         {foreach $table.tool_bar.list as $tool}
@@ -35,5 +34,11 @@
         </tr>
         </thead>
     </table>
+    <div id="{$Request.controller}_dialog" class="easyui-dialog" style="width:auto;height:auto" data-options="buttons:'#{$Request.controller}_buttons',collapsible:false,minimizable:false,maximizable:false,shadow:false,closed:true,modal:true"></div>
+    <div id="{$Request.controller}_buttons">
+        <a href="#" class="easyui-linkbutton">Save</a>
+        <a href="#" class="easyui-linkbutton">Close</a>
+    </div>
 {/notempty}
 {/present}
+

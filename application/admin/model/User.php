@@ -63,6 +63,7 @@ class User extends Base
     /* 退出登录 */
     public function logout()
     {
+        cache('DB_CONFIG_DATA', NULL);
         session(config('auth_key'), '');
         session('menu_list', '');
         session(null);

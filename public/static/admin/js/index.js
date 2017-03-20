@@ -52,11 +52,8 @@
         },
         success: function (data) {
             try {
-
                 var dataJSON = JSON.parse(data);
-
                 $.messager.show({title: '成功', msg: dataJSON.Msg, timeout: 2000, showType: 'slide'});
-
             } catch (e) {
                 $.messager.alert('错 误', '数据格式错误！', 'error');
             }
@@ -78,51 +75,6 @@
                 });
             }
         },
-        /**
-         * 初始化一个datagrid
-         * @param url   远程加载数据地址
-         * @param columns 表格列名称
-         * @param toolbar 表格上方工具条ID
-         * @param method  远程数据加载方式‘post & get’
-         * @param height  表格高度
-         * @param singleSelect 是否为单选
-         * @param pagination   是否进行分页
-         */
-        initDataGridTable: function (object) {
-            var toolbar = object.toolbar ? object.toolbar : '';
-            var method = object.method ? object.method : 'post';
-            var height = object.height ? object.height : 750;
-            var singleSelect = object.singleSelect ? false : true;
-            var pagination = object.pagination ? false : true;
-            $(object.grid).datagrid({
-                url: object.url,         //请求后台的URL（*）
-                columns: object.columns,
-                method: method,                      //请求方式（*）
-                toolbar: toolbar,                //工具按钮用哪个容器
-                height: height,
-                singleSelect: singleSelect,                  //单选选项
-                fit: true,
-                fitColumns: true,
-                striped: true,
-                border: false,
-                pagination: pagination,
-                pageSize: 20,
-                pageList: [10, 20, 50],
-                pageNumber: 1,
-                sortName: 'id',
-                sortOrder: 'desc'
-            });
-        },
-
-        // menuClick: function (node) {
-        //     if ($('#LeftMenu').tree('isLeaf', node.target)) {//判断是否是叶子节点
-        //         rule = node.attributes.rule;
-
-        //         if (url) {
-        //             updateTabs(cname, url, tit, icon);
-        //         }
-        //     }
-        // },
 
 
         gridAjax: function (url, grid) {
@@ -179,16 +131,6 @@
             })
         },
 
-        /* 提交表单 */
-        fromSubmit: function (Model_name) {
-            $.post($('#' + Model_name + '_Submit_From').attr("action"), $('#' + Model_name + '_Submit_From').serialize(), function (res) {
-                if (!res.status) {
-                    $.messager.show({title: '错误提示', msg: res.info, timeout: 2000, showType: 'slide'});
-                } else {
-                    $.messager.show({title: '成功提示', msg: res.info, timeout: 1000, showType: 'slide'});
-                }
-            })
-        },
         getAttributes: function (event) {
             var info = {};
             if (event) {
@@ -204,17 +146,23 @@
             if ($(event.target).parent().parent().is('a')) {
                 var info = window.app.getAttributes($(event.target).parent().parent());
                 window.app.SLog(info);
+
+                /**
+                 * 调整dialog后显示
+                 */
+                var resourcesUrl = info.controller + '/resourcesView/type/create';
+                window.app.dialogController(info.controller + '_dialog', true, resourcesUrl);
+
+
             }
         },
         gridEdit: function (id) {
             if ($(event.target).is('a')) {
                 var info = window.app.getAttributes(event.target);
                 if (id) {
-                    window.app.SLog(info,id);
-
-                }
-                else {
-                    $.messager.alert('错 误', '参数错误！', 'error');
+                    window.app.SLog(info, id);
+                    var resourcesUrl = info.controller + '/resourcesView/type/edit/ID/' + id;
+                    window.app.dialogController(info.controller + '_dialog', true, resourcesUrl);
                 }
             }
         },
@@ -227,7 +175,7 @@
                         if (info) {
                             $.post(info.controller + '/delete', {'id': id}, function (res) {
                                 if (200 == res.code) {
-                                    window.app.Reload(info.gridID);
+                                    window.app.reload(info.gridID);
                                     window.app.success(res);
                                 } else {
                                     window.app.error(res);
@@ -245,18 +193,33 @@
         gridReload: function () {
             if ($(event.target).parent().parent().is('a')) {
                 var info = window.app.getAttributes($(event.target).parent().parent());
-                window.app.Reload(info.gridID);
+                window.app.reload(info.gridID);
             }
         },
         /* 刷新页面 */
-        Reload: function (gridID) {
+        reload: function (gridID) {
             if ($('#' + gridID).hasClass('easyui-treegrid')) {
                 $('#' + gridID).treegrid('reload');
             }
             else {
                 $('#' + gridID).datagrid('reload');
             }
+        },
+        /*控制dialog打开关闭*/
+        dialogController: function (dialogID, state, url) {
+            this.SLog(dialogID, state, url);
+            if (true === state) {
+                $('#' + dialogID).dialog('center');
+                $('#' + dialogID).dialog('open');
+                if (url) {
+                    $('#' + dialogID).dialog('refresh', url);
+                }
+            }
+            else {
+                $('#' + dialogID).dialog('close'); // close a window
+            }
         }
+
     };
     return window.app = window.app || app;
 })($, window);

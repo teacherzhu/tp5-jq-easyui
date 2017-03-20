@@ -230,7 +230,6 @@ return [
         // 是否使用 setcookie
         'setcookie' => true,
     ],
-    'WEB_TITLE' =>'GMS 后台管理系统',
     'auth_key' => 'uid',
     'administrator' => array('1'),
     'user_login' => 'admin/base/login',

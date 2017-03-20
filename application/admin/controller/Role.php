@@ -10,6 +10,7 @@ namespace app\admin\Controller;
 
 
 use app\builder\controller\tableBuilder;
+use think\Request;
 
 class Role extends core
 {
@@ -51,6 +52,19 @@ class Role extends core
 
         $this->assign('table', $userTable);
         return view('./template/index_table.tpl');
+    }
+
+    public function searchView()
+    {
+    }
+
+    public function resourcesView()
+    {
+        $request = Request::instance();
+        $type = $request->param('type');
+        return view('./template/index_form.tpl');
+
+
     }
 
 }

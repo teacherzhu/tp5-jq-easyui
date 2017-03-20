@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 
-    {block name="title"}<title>{:config("WEB_TITLE")}</title>{/block}
+    {block name="title"}<title>{:cache('DB_CONFIG_DATA')['WEB_SITE_TITLE']}</title>{/block}
     {load href="../static/easyui/themes/bootstrap/easyui.css" /}
     {load href="../static/easyui/themes/icon.css" /}
     {block name="extend_css"}{/block}
