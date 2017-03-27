@@ -11,6 +11,40 @@ class builder
 {
     protected $button = array();
 
+    protected $input = array();
+
+    public function addInput($type = 'text', $attribute = array())
+    {
+        $default_class = 'easyui-textbox';
+        $default_width = '180px';
+        $default_height = '30px';
+        $default_input = array('name' => '');
+        $temp = array();
+        if ($default_input && !empty($attribute)) {
+            $default_input = array_merge($default_input, $attribute);
+            if (isset($attribute['class'])) {
+                $default_class = $attribute['class'];
+            }
+            if (isset($attribute['width'])) {
+                $default_width = $attribute['width'];
+            }
+            if (isset($attribute['height'])) {
+                $default_height = $attribute['height'];
+            }
+            unset($default_input['class']);
+            unset($default_input['width']);
+            unset($default_input['height']);
+        }
+        $temp['class'] = $default_class;
+        $temp['width'] = $default_width;
+        $temp['height'] = $default_height;
+        switch ($type) {
+            case 'text': // 文本框
+                <input class="easyui-textbox" style="width:100%;height:32px">
+        }
+
+    }
+
     /**
      * @param string $type
      * @param array $attribute
@@ -94,21 +128,20 @@ class builder
         $this->button = array();
         return $res;
     }
+
     public function setOptions($options)
     {
         $str_options = '';
         if (is_array($options)) {
             foreach ($options as $k => $option) {
 
-                if(is_bool($option)){
-                    if($option){
+                if (is_bool($option)) {
+                    if ($option) {
                         $str_options .= $k . ":true,";
-                    }
-                    else{
+                    } else {
                         $str_options .= $k . ":false,";
                     }
-                }
-                else if ('formatter' == $k) {
+                } else if ('formatter' == $k) {
                     $str_options .= $k . ":" . $option . ",";
                 } else {
                     $str_options .= $k . ":'" . $option . "',";

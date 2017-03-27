@@ -3,7 +3,7 @@
 {notempty name="form"}
     <form id="{$Request.controller}_form" method="post">
 
-        {if condition="(count($form)/2) egt 4"}
+        {if condition="count($form) egt 5"}
             <div style="width:50%;float:left">
 
             </div>
@@ -12,14 +12,15 @@
             </div>
         {else}
             <div style="width:100%;float:left">
-                {volist name="form" id="formList"}
-                    <div></div>
-                    {if condition="$formList.visiable eq true"}
-                    <label>{$formList.text}</label>
-                    <input id="inp_{$formList.name}" type="text" name="{$formList.name}"/>
-
-                    <span> * </span>
-                    {/if}
+                {volist name="formList" id="list"}
+                {if condition="$list.visiable eq true"}
+                    <div>
+                        <label>{$list.text}</label>
+                        <input id="inp_{$list.name}" type="text" name="{$list.name}"/>
+                    </div>
+                {else}
+                    <input id="inp_{$list.name}" type="text" name="{$list.name}" type="hidden"/>
+                {/if}
                 {/volist}
             </div>
         {/if}

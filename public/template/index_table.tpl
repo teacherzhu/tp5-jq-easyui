@@ -34,10 +34,11 @@
         </tr>
         </thead>
     </table>
-    <div id="{$Request.controller}_dialog" class="easyui-dialog" style="width:auto;height:auto" data-options="buttons:'#{$Request.controller}_buttons',collapsible:false,minimizable:false,maximizable:false,shadow:false,closed:true,modal:true"></div>
+    <div id="{$Request.controller}_dialog" class="easyui-dialog" style="width:auto;height:auto"
+         data-options="buttons:'#{$Request.controller}_buttons',collapsible:false,minimizable:false,maximizable:false,shadow:false,closed:true,modal:true"></div>
     <div id="{$Request.controller}_buttons">
-        <a href="#" class="easyui-linkbutton">Save</a>
-        <a href="#" class="easyui-linkbutton">Close</a>
+        <a href="#" class="easyui-linkbutton" onclick="window.app.formController('{$Request.controller}')">Save</a>
+        <a href="#" class="easyui-linkbutton" onclick="window.app.dialogController('{$Request.controller}_dialog',false)">Close</a>
     </div>
 {/notempty}
 {/present}

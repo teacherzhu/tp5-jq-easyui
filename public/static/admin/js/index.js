@@ -1,6 +1,7 @@
 (function ($, window) {
     var app = {
         debug: true,
+        operatorFlag:undefined,
         init: function () {
             window.app.SLog('------------------init    start-----------------------');
             $('#menu').tree({
@@ -146,6 +147,11 @@
             if ($(event.target).parent().parent().is('a')) {
                 var info = window.app.getAttributes($(event.target).parent().parent());
                 window.app.SLog(info);
+                window.app.operatorFlag = 'create';
+
+                $('#' + info.controller+'_dialog').dialog({
+                    title:info.controller+'_数据添加'
+                });
 
                 /**
                  * 调整dialog后显示
@@ -160,7 +166,14 @@
             if ($(event.target).is('a')) {
                 var info = window.app.getAttributes(event.target);
                 if (id) {
-                    window.app.SLog(info, id);
+                    window.app.SLog(info);
+                    window.app.operatorFlag = 'update';
+                    $('#' + info.controller+'_dialog').dialog({
+                        title:info.controller+'_数据修改'
+                    });
+                    /**
+                     * 调整dialog后显示
+                     */
                     var resourcesUrl = info.controller + '/resourcesView/type/edit/ID/' + id;
                     window.app.dialogController(info.controller + '_dialog', true, resourcesUrl);
                 }
@@ -218,6 +231,21 @@
             else {
                 $('#' + dialogID).dialog('close'); // close a window
             }
+        },
+
+        /**
+         * 业务信息提交
+         * @param formID
+         * 业务逻辑：
+         * 将表单提交按钮禁用
+         * 验证表单数据
+         * 提交表单数据
+         * 关闭表单界面
+         * 返回提交表单信息
+         */
+        formController:function (controller) {
+
+            window.app.SLog(controller);
         }
 
     };
