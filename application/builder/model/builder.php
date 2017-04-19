@@ -1,5 +1,5 @@
 <?php
-namespace app\builder\controller;
+namespace app\builder\model;
 
 /**
  * Created by PhpStorm.
@@ -40,7 +40,7 @@ class builder
         $temp['height'] = $default_height;
         switch ($type) {
             case 'text': // 文本框
-                <input class="easyui-textbox" style="width:100%;height:32px">
+//                <input class="easyui-textbox" style="width:100%;height:32px">
         }
 
     }

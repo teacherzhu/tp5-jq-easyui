@@ -7,8 +7,7 @@
  */
 
 namespace app\admin\Controller;
-
-use app\builder\controller\tableBuilder;
+use app\builder\model\tableBuilder;
 use think\Request;
 
 class User extends core

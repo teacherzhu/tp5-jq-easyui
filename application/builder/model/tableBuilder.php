@@ -6,7 +6,7 @@
  * Time: 下午2:11
  */
 
-namespace app\builder\controller;
+namespace app\builder\model;
 
 
 use think\Request;
@@ -21,7 +21,7 @@ class tableBuilder extends builder
         'tool_bar' => array(
             'id' => '',
             'gridType' => '',
-            'controller' => '',
+            'model' => '',
             'list' => array()
         ),
         'columns' => array(),
@@ -137,7 +137,7 @@ class tableBuilder extends builder
                     $options = preg_replace('/\'/', "", $button['options']);
                     $options = str2arr($options);
                     $options = substr($options[0], 5);
-                    $html .= "<a href=" . $button['href'] . " controller=" . $this->request->controller() . " grid=" . $this->tableID . " gridType=table class=" . $button['class'] . " onclick=" . $button['click'] . ">" . $options . "</a>&nbsp&nbsp";
+                    $html .= "<a href=" . $button['href'] . " model=" . $this->request->controller() . " grid=" . $this->tableID . " gridType=table class=" . $button['class'] . " onclick=" . $button['click'] . ">" . $options . "</a>&nbsp&nbsp";
                 }
                 $default_column['formatter'] .= "return '<div class=\'operate\'>" . $html . "</div>';}";
                 break;

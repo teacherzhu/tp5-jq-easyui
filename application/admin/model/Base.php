@@ -10,6 +10,7 @@ namespace app\admin\model;
 
 
 use app\admin\utils\groupUtil;
+use think\Exception;
 use think\Model;
 
 class Base extends Model
@@ -21,7 +22,7 @@ class Base extends Model
      * @return array
      */
 
-    protected function search()
+    protected function searchMap()
     {
         return array();
     }
@@ -53,74 +54,166 @@ class Base extends Model
     /**
      * 基础信息默认查询方式
      * @param array $request
+     * @param bool $pagination
+     * @param string $tableName
      * @return array|mixed
      */
-    public function getDataList($request)
+    public function getDataList($request, $pagination = true, $tableName = '')
     {
-        $map = $this->search();
-
+        $map = $this->searchMap();
         $page = $request->has('page', 'post') ? $request->param('page') : 1;
         $rows = $request->has('rows', 'post') ? $request->param('rows') : 10;
 
-        $db = $this->where($map);
-
-        if ('User' == $request->controller() || 'Group' == $request->controller()) {
-            $Utils = new groupUtil();
-            $groupId = get_group_id();
-            $groupIds = $Utils->getAllChildID($groupId);
-            $db = $db->where('group_id', 'in', $groupIds);
+        if ('' == $tableName) {
+            $tableName = $this->table;
         }
-        $data['total'] = $db->count();
+        $data['total'] = db($tableName)->where($map)->count();
         if (0 == $data['total']) {
             $data['data'] = array();
+            return $data;
         } else {
-            if ('User' == $request->controller()) {
-                $db = $db->where($map)->where('group_id', 'in', $groupIds)->page($page, $rows);
+            if ($pagination) {
+                $data['data'] = db($tableName)->where($map)->page($page, $rows)->select();
             } else {
-                $db = $db->where($map)->page($page, $rows);
+                $data['data'] = db($tableName)->where($map)->select();
             }
-            $data['data'] = $db->select();
+            $data = $this->formatDataContent($data);
+            $data = $this->formatDataStructure($data);
+            return $data;
         }
+    }
 
-        $data = $this->formatDataContent($data);
-        $data = $this->formatDataStructure($data);
-
+    /**
+     * 校验数据是否合法
+     * @param array $request
+     *
+     */
+    protected function addCheckData($data)
+    {
+        $validate['flag'] = false;
+        $validate['data'] = $data;
+        $validate['Msg'] = '';
         return $data;
     }
 
-    public function createData($request)
+    /**
+     * 向数据中添加业务逻辑
+     * @param array $data
+     */
+    protected function addBusinessLogic($data)
     {
+        return $data;
+    }
 
+    /**
+     * @param $request
+     * @param bool $isValidate
+     * @param string $tableName
+     * @return array
+     */
+    public function createData($request, $isValidate = true, $tableName = '')
+    {
+        if ('' == $tableName) {
+            $tableName = $this->table;
+        }
+        if ($isValidate) {
+            $validate = $this->addCheckData($request->param());
+        } else {
+            $validate['flag'] = true;
+        }
+        if ($validate['flag']) {
+            $createData = $this->addBusinessLogic($validate['data']);
+            $this->startTrans();
+            try {
+                $res = db($tableName)->create($createData);
+                if (false !== $res) {
+                    $this->commit();
+                    return message(200, '操作成功！', $res);
+                }
+            } catch (Exception $e) {
+                $this->rollback();
+                return message(400, $e->getMessage());
+            }
+        } else {
+            return message(400, $validate['Msg']);
+        }
+    }
+
+
+
+    /**
+     * 校验数据是否合法
+     * @param array $request
+     *
+     */
+    protected function editCheckData($data)
+    {
+        $validate['flag'] = false;
+        $validate['data'] = $data;
+        $validate['Msg'] = '';
+        return $data;
+    }
+
+    /**
+     * 向数据中添加业务逻辑
+     * @param array $data
+     */
+    protected function editBusinessLogic($data)
+    {
+        return $data;
     }
 
     /**
      * post请求为修改数据库get请求为查询数据库数据
      * 根据提供的group_id ,id 修改数据
      * 修改数据(根据不同界面业务逻辑需覆盖父函数)
+     * @param $request
+     * @param bool $isValidate
+     * @param string $tableName
+     * @return array
      */
-    public function editData($request)
+    public function editData($request, $isValidate = true, $tableName = '')
     {
-
+        if('' == $tableName){
+            $tableName = $this->table;
+        }
         if ($request->isGet()) {
-
-            $Utils = new GroupInfoUtils();
-            //获取检索条件
-            $id = I('get.ID');
-            $data = $this->where(array('id' => $id,))->find(); //查找语句
-
-            if ($data) {
-                return returnSuccess('查询成功', $data);
+            $param = $request->param();
+            $res = db($tableName)->where('id',$param)->select();
+            return $res;
+        } else {
+            if ($isValidate) {
+                $validate = $this->editCheckData($request->param());
             } else {
-                return returnError($this->getError());
+                $validate['flag'] = true;
+            }
+            if ($validate['flag']) {
+                $editData = $this->editBusinessLogic($validate['data']);
+                $this->startTrans();
+                try {
+                    $res = db($tableName)->where('id',$editData['id'])->update($editData);
+                    if (false !== $res) {
+                        $this->commit();
+                        return message(200, '操作成功！', $res);
+                    }
+                } catch (Exception $e) {
+                    $this->rollback();
+                    return message(400, $e->getMessage());
+                }
+            } else {
+                return message(400, $validate['Msg']);
             }
         }
     }
 
     /**
      * 基础信息删除函数
-     * 前台需传递参数  id
+     * 前台需传递参数
+     * @param $request
+     * @param string $tableName
+     * @return array
      */
-    public function deleteData($id)
+    public function deleteData($request,$tableName)
     {
     }
 

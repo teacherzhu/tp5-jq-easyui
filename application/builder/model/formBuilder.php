@@ -6,7 +6,7 @@
  * Time: 18:44
  */
 
-namespace app\builder\controller;
+namespace app\builder\model;
 
 
 class formBuilder extends builder

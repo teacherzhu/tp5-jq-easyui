@@ -121,40 +121,6 @@ function arr2str($arr, $glue = ',')
 }
 
 /**
- * 数组排序
- * @access base
- * @param array $list 查询结果
- * @param string $field 排序的字段名
- * @param string $sort 排序类型
- * asc正向排序 desc逆向排序 nat自然排序
- * @return array
- */
-function list_sort_by($list, $field, $sort = 'asc')
-{
-    if (is_array($list)) {
-        $refer = $resultSet = array();
-        foreach ($list as $i => $data)
-            $refer[$i] = &$data[$field];
-        switch ($sort) {
-            case 'asc': // 正向排序
-                asort($refer);
-                break;
-            case 'desc':// 逆向排序
-                arsort($refer);
-                break;
-            case 'nat': // 自然排序
-                natcasesort($refer);
-                break;
-        }
-        foreach ($refer as $key => $val)
-            $resultSet[] = &$list[$key];
-        return $resultSet;
-    } else {
-        return array();
-    }
-}
-
-/**
  * 将list_to_tree的树还原成列表
  * @param  array $tree 原来的树
  * @param  string $child 孩子节点的键
@@ -192,15 +158,6 @@ function get_group_id()
 function get_role_id()
 {
     return session('user_info')['role_id'];
-}
-
-function get_status($status)
-{
-    $s = array(
-        0 => '禁用',
-        1 => '启用'
-    );
-    return $s[$status];
 }
 
 function message($code, $msg = '', $data = array())

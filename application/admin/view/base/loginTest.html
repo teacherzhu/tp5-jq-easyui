@@ -1,0 +1,137 @@
+{load href="../../static/easyui/jquery.min.js" /}
+{block name="body"}
+<style>
+    body {
+        text-align: center;
+        color: #fff;
+        font-family:Microsoft YaHei,Segoe UI,Tahoma,Arial,Verdana,sans-serif;
+        background-color: #323542;
+    }
+    .login-form{
+        width:360px;
+        height:auto;
+        margin:220px 300px 20px auto;
+    }
+    .common-div{
+        width:100%;
+        height:56px;
+        overflow:hidden;
+        border-radius:4px;
+        -webkit-border-radius:4px;
+        margin-bottom:40px;
+    }
+    .user-name,.user-pasw{
+        background-color:rgba(255,255,255,0.1);
+    }
+    .common-div >.common-icon{
+        float:left;
+        width:20px;
+        height:20px;
+        overflow:hidden;
+        margin:19px;
+    }
+    .common-div >.common-icon img{
+        width:100%;
+        height:auto;
+    }
+    .common-div >input{
+        float:left;
+        width:282px;
+        height:20px;
+        margin:19px 8px;
+        background-color:transparent;
+        border:none;
+        outline:none;
+        font-size:26px;
+        color:#fff;
+    }
+
+    .login-btn{
+        background-color:#0bd38a;
+        color:#fff;
+        font-size:26px;
+        text-align:center;
+        line-height:56px;
+    }
+    .forgets{
+        text-align: right;
+        width:360px;
+        height:auto;
+        margin:0 300px 0 auto;
+    }
+    .forgets >a{
+        color:#fff;
+        opacity:0.2;
+        font-size:24px;
+        margin-right: 8px;
+        text-decoration:none;
+    }
+    .forgets >a +a{
+        float:right;
+    }
+</style>
+<body>
+    <div id="login-div" class="login-form">
+        <form action="#">
+            <div class="user-name common-div">
+            	<span class="eamil-icon common-icon">
+                	<img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/eamil.png">
+                </span>
+                <input type="email" name="username" value="" placeholder="E-mail address">
+            </div>
+            <div class="user-pasw common-div">
+            	<span class="pasw-icon common-icon">
+                	<img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/password.png">
+                </span>
+                <input type="password" name="password" value="" placeholder="******">
+            </div>
+            <div class="login-btn common-div">登 录</div>
+        </form>
+    </div>
+    <div class="forgets">
+        <a id="first" href="#">首次登陆</a><span> | </span>
+        <a id="forget" href="#">忘记密码</a>
+    </div>
+    <div id="password-div" class="login-form">
+        <form action="#">
+            <div class="user-name common-div">
+            	<span class="eamil-icon common-icon">
+                	<img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/eamil.png">
+                </span>
+                <input type="text" name="username" value="" placeholder="用户名">
+            </div>
+            <div class="user-name">
+                <input type="text" name="username" value="" placeholder="验证码">
+            </div>
+            <div id="password-inp" class="user-pasw common-div">
+            	<span class="pasw-icon common-icon">
+                	<img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/password.png">
+                </span>
+                <input type="password" name="password" value="" placeholder="******">
+            </div>
+            <div class="login-btn common-div">登 录</div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+
+        function initHandle() {
+            $('#password-div').hide();
+            $('#first').bind('click',firstLogin);
+            $('#forget').bind('click',forgetPassword);
+        }
+        function firstLogin() {
+            $('#login-div').hide();
+            $('#password-div').show();
+        }
+        function forgetPassword() {
+            $('#login-div').hide();
+            $('#password-div').show();
+        }
+        $(function () {
+            initHandle()
+        });
+    </script>
+
+</body>
+{/block}

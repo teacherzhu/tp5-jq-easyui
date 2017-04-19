@@ -53,6 +53,10 @@ class Base extends Controller
         }
     }
 
+    public function loginTest(){
+        return $this->fetch();
+    }
+
     public function index()
     {
         if (is_login()) {
