@@ -3,135 +3,189 @@
 <style>
     body {
         text-align: center;
-        color: #fff;
-        font-family:Microsoft YaHei,Segoe UI,Tahoma,Arial,Verdana,sans-serif;
-        background-color: #323542;
-    }
-    .login-form{
-        width:360px;
-        height:auto;
-        margin:220px 300px 20px auto;
-    }
-    .common-div{
-        width:100%;
-        height:56px;
-        overflow:hidden;
-        border-radius:4px;
-        -webkit-border-radius:4px;
-        margin-bottom:40px;
-    }
-    .user-name,.user-pasw{
-        background-color:rgba(255,255,255,0.1);
-    }
-    .common-div >.common-icon{
-        float:left;
-        width:20px;
-        height:20px;
-        overflow:hidden;
-        margin:19px;
-    }
-    .common-div >.common-icon img{
-        width:100%;
-        height:auto;
-    }
-    .common-div >input{
-        float:left;
-        width:282px;
-        height:20px;
-        margin:19px 8px;
-        background-color:transparent;
-        border:none;
-        outline:none;
-        font-size:26px;
-        color:#fff;
+        color: #000;
+        font-family: Microsoft YaHei, Segoe UI, Tahoma, Arial, Verdana, sans-serif;
+        background-color: #28b49b;
     }
 
-    .login-btn{
-        background-color:#0bd38a;
-        color:#fff;
-        font-size:26px;
-        text-align:center;
-        line-height:56px;
+    .login-form {
+        width: 360px;
+        height: auto;
+        margin: 220px 300px 20px auto;
     }
-    .forgets{
+
+    .common-div {
+        width: 100%;
+        height: 60px;
+        overflow: hidden;
+        border-radius: 4px;
+        -webkit-border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .user-name, .user-pasw {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .common-div > .common-icon {
+        float: left;
+        width: 20px;
+        height: 20px;
+        overflow: hidden;
+        margin: 20px;
+    }
+
+    .common-div > .common-icon img {
+        width: 100%;
+        height: auto;
+    }
+
+    .common-div > input {
+        float: left;
+        width: 280px;
+        height: 30px;
+        margin: 15px 8px 0 0;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        font-size: 26px;
+        color: #000;
+    }
+
+    .login-btn {
+        background-color: #8a7ad3;
+        color: #000;
+        font-size: 26px;
+        text-align: center;
+        line-height: 56px;
+    }
+
+    .forgets {
         text-align: right;
-        width:360px;
-        height:auto;
-        margin:0 300px 0 auto;
+        width: 360px;
+        height: auto;
+        margin: 0 300px 0 auto;
     }
-    .forgets >a{
-        color:#fff;
-        opacity:0.2;
-        font-size:24px;
+
+    .forgets > a {
+        color: #000;
+        opacity: 0.6;
+        font-size: 24px;
         margin-right: 8px;
-        text-decoration:none;
+        text-decoration: none;
     }
-    .forgets >a +a{
-        float:right;
+
+    .forgets > a + a {
+        float: right;
     }
 </style>
 <body>
-    <div id="login-div" class="login-form">
-        <form action="#">
-            <div class="user-name common-div">
-            	<span class="eamil-icon common-icon">
-                	<img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/eamil.png">
-                </span>
-                <input type="email" name="username" value="" placeholder="E-mail address">
-            </div>
-            <div class="user-pasw common-div">
-            	<span class="pasw-icon common-icon">
+<div id="login-div" class="login-form">
+
+    <div class="common-div user-name">
+        <span class="common-icon">
+            <img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/eamil.png">
+        </span>
+        <input id="login-name" type="text" value="" placeholder="用户名/电话号码">
+    </div>
+    <div class="user-pasw common-div">
+        <span class="common-icon">
+            <img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/password.png">
+        </span>
+        <input id="login-password" type="password" value="" placeholder="******">
+    </div>
+    <div class="common-div login-btn" onclick="login()">登 录</div>
+</div>
+
+<div id="register-div" class="login-form">
+
+    <div class="common-div user-name">
+            <span class="eamil-icon common-icon">
+                <img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/eamil.png">
+            </span>
+        <input id="register-tel" type="text" value="" placeholder="手机号码" style="width: 180px">
+        <span class="common-icon" style="margin: 0;width: 100px;height: 60px">
+            <button id="sms-verification" onclick="verification()" style="width: 100%;height: 30px;margin-top: 15px">获取验证码</button>
+        </span>
+    </div>
+    <div id="verification">
+        <div class="common-div" style="display: inline;margin-bottom: 10px">
+            <input id="register-verification" type="text" value="" placeholder="验证码" style="width: 50%;margin-left: 20px">
+            <span class="common-icon" style="width: 30%;height: 30px">
+                <img src="../../static/admin/img/timg.jpg" style="">
+            </span>
+        </div>
+        <div id="password-inp" class="common-div user-pasw">
+            	<span class="common-icon">
                 	<img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/password.png">
                 </span>
-                <input type="password" name="password" value="" placeholder="******">
-            </div>
-            <div class="login-btn common-div">登 录</div>
-        </form>
-    </div>
-    <div class="forgets">
-        <a id="first" href="#">首次登陆</a><span> | </span>
-        <a id="forget" href="#">忘记密码</a>
-    </div>
-    <div id="password-div" class="login-form">
-        <form action="#">
-            <div class="user-name common-div">
-            	<span class="eamil-icon common-icon">
-                	<img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/eamil.png">
-                </span>
-                <input type="text" name="username" value="" placeholder="用户名">
-            </div>
-            <div class="user-name">
-                <input type="text" name="username" value="" placeholder="验证码">
-            </div>
-            <div id="password-inp" class="user-pasw common-div">
-            	<span class="pasw-icon common-icon">
+            <input id="register-password" type="password" value="" placeholder="新密码">
+        </div>
+        <div id="password-qu" class="common-div user-pasw">
+            	<span class="common-icon">
                 	<img src="http://www.17sucai.com/preview/206286/2017-01-19/login/image/password.png">
                 </span>
-                <input type="password" name="password" value="" placeholder="******">
-            </div>
-            <div class="login-btn common-div">登 录</div>
-        </form>
+            <input id="register-equal-password" type="password" value="" placeholder="确认密码">
+        </div>
     </div>
+    <div class="login-btn common-div">登 录</div>
+</div>
+<div id="operate" class="forgets">
+    <a id="first" href="#">首次登陆</a><span> | </span>
+    <a id="forget" href="#">忘记密码</a>
+</div>
+<div id="register" class="forgets" style="text-align: left">
+    <a id="back" href="#"><
+        <返回
+    </a>
+</div>
 
-    <script type="text/javascript">
 
-        function initHandle() {
-            $('#password-div').hide();
-            $('#first').bind('click',firstLogin);
-            $('#forget').bind('click',forgetPassword);
-        }
-        function firstLogin() {
-            $('#login-div').hide();
-            $('#password-div').show();
-        }
-        function forgetPassword() {
-            $('#login-div').hide();
-            $('#password-div').show();
-        }
-        $(function () {
-            initHandle()
-        });
-    </script>
+<script type="text/javascript">
+
+    function initHandle() {
+        $('#register-div').hide();
+        $('#verification').hide();
+        $('#register').hide();
+        $('#first').bind('click', registerLogin);
+        $('#forget').bind('click', registerLogin);
+        $('#back').bind('click', backLogin);
+    }
+
+    function backLogin() {
+        $('#register-div').hide();
+        $('#verification').hide();
+        $('#register').hide();
+        $('#login-div').show();
+        $('#operate').show();
+
+    }
+    function resetRegister() {
+        $('#register-tel').val('');
+        $('#register-verification').val('');
+        $('#register-password').val('');
+        $('#register-equal-password').val('');
+    }
+    function resetLogin() {
+        $('#login-name').val('');
+        $('#login-password').val('');
+    }
+    function registerLogin() {
+        $('#login-div').hide();
+        $('#operate').hide();
+        $('#register').show();
+        $('#register-div').show();
+    }
+    function verification() {
+        $('#verification').show();
+    }
+    function login() {
+        alert('测试！');
+    }
+    $(function () {
+        initHandle()
+    });
+</script>
 
 </body>
 {/block}
